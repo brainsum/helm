@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  drupal:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2020-10-07T17:22:58.397972964+02:00"
+    description: Opinionated helm chart for Drupal 8/9.
+    digest: e1c5265e8c2f028c06fca9c7b889f0f4517b8a33eb018d6062e355d2ab7eb030
+    name: drupal
+    type: application
+    urls:
+    - https://brainsum.github.io/helm/drupal-0.1.0.tgz
+    version: 0.1.0
+generated: "2020-10-07T17:22:58.39691621+02:00"
