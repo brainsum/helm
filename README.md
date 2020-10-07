@@ -1,7 +1,9 @@
 # Helm charts
 
-@todo: proper instructions
+## Add repo
+
+`helm repo add brainsum https://brainsum.github.io/helm`
 
 ## Install or upgrade
 
-`helm upgrade --install <release name> --values <values file> <chart directory>`
+`helm upgrade <release name> brainsum/drupal --install --values <values file>`
