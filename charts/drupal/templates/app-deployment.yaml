@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.global.project }}-{{ .Values.global.environment }}-app
+  labels:
+    {{- include "common.labels" . | indent 4 }}
+    app.kubernetes.io/component: app
+    deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-app
+spec:
+  selector:
+    matchLabels:
+      {{- include "common.labels" . | indent 6 }}
+      app.kubernetes.io/component: app
+      deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-app
+  template:
+    metadata:
+      labels:
+        {{- include "common.labels" . | indent 8 }}
+        app.kubernetes.io/component: app
+        deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-app
+    spec:
+      securityContext:
+        fsGroup: 1000
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecret }}
+      # @todo: Does this handle multiple containers writing at the same time?
+      volumes:
+      {{- include "common.volumes" . | indent 6 -}}
+      {{- include "drupal.volumes" . | indent 6 -}}
+      terminationGracePeriodSeconds: {{ .Values.gracefulUpdate.terminationGracePeriodSeconds }}
+      containers:
+        {{- include "drupal.app.containerSpec" . | indent 8 -}}
+        - image: {{ .Values.nginxImage }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          name: nginx
+          ports:
+            - name: http
+              containerPort: 8080
+          volumeMounts:
+          {{- include "common.mounts" . | indent 10 -}}
+          {{- include "nginx.mounts" . | indent 10 -}}
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "32Mi"
+            limits:
+              cpu: "200m"
+              memory: "128Mi"
+          lifecycle:
+            preStop:
+            {{- include "common.deployment.lifecyle.preStop" . | indent 14 }}

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.global.project }}-{{ .Values.global.environment }}-app
+  labels:
+    {{- include "common.labels" . | indent 4 }}
+    app.kubernetes.io/component: app
+data:
+  database.host: {{ .Values.app.config.database.host | quote }}
+  database.port: "3306"
+  drupal-base-uri: {{ .Values.ingress.host }}
+  drush-site-uri: {{ include "drupal.appUri" . | quote }}

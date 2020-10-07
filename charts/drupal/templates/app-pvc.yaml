@@ -1,0 +1,14 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ .Values.global.project }}-{{ .Values.global.environment }}-app-pvc
+  labels:
+    {{- include "common.labels" . | indent 4 }}
+    app.kubernetes.io/component: storage
+spec:
+  accessModes:
+    - "ReadWriteMany"
+  resources:
+    requests:
+      storage: {{ .Values.app.storage.size }}
+  storageClassName: {{ .Values.app.storage.class }}

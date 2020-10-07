@@ -1,0 +1,1 @@
+1. Access the app at https://{{ .Values.ingress.host }}

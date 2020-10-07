@@ -1,0 +1,28 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Values.global.project }}-{{ .Values.global.environment }}-cron
+  labels:
+    {{- include "common.labels" . | indent 4 }}
+    app.kubernetes.io/component: app
+spec:
+  schedule: "0 1 * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          name: {{ .Values.global.project }}-{{ .Values.global.environment }}-cron
+          labels:
+            {{- include "common.labels" . | indent 12 }}
+            app.kubernetes.io/component: app
+        spec:
+          securityContext:
+            fsGroup: 1000
+          imagePullSecrets:
+            - name: {{ .Values.imagePullSecret }}
+          volumes:
+          {{- include "common.volumes" . | indent 10 -}}
+          {{- include "drupal.volumes" . | indent 10 -}}
+          restartPolicy: Never
+          containers:
+          {{- include "drupal.cron.containerSpec" . | indent 10 -}}

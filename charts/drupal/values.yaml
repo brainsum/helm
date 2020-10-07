@@ -1,0 +1,41 @@
+global:
+  storageClass: "azurefile-premium"
+  project: "drupal"
+  environment: "production"
+
+imagePullPolicy: "Always"
+imagePullSecret: "drupal-acr-cred"
+drupalImage: "drupalcr.azurecr.io/brainsum/drupal-app:latest"
+nginxImage: "drupalcr.azurecr.io/brainsum/drupal-nginx:latest"
+
+ingress:
+  host: "mysite.com"
+  tlsSecret: "mysite-tls-secret"
+
+# If true, overrides the robots.txt file.
+# Requirements:
+# - A secret named as {{ .Values.global.project }}-{{ .Values.global.environment }}-app-settings
+# - A 'robots.txt' key in the secret with the robots.txt content.
+# Note:
+# - This is useful for disallowing robots access for e.g. a dev site.
+# @todo: Add dedicated configmap/secret for this within the chart, allow using existing config/secret.
+robotsOverride: true
+
+app:
+  config:
+    database:
+      host: "drupal-database-mariadb.drupal.svc.cluster.local"
+  storage:
+    class: "drupal-storage"
+    size: "5Gi"
+  backupStorage:
+    class: "drupal-storage"
+    size: "5Gi"
+
+gracefulUpdate:
+  preStopTimeout: 60
+  terminationGracePeriodSeconds: 70
+  connectionDrainTimeout: 30
+
+rollback:
+  backupVersion: "latest"
