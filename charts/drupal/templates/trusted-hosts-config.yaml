@@ -1,0 +1,29 @@
+{{- if eq .Values.trustedHosts.enable true }}
+{{- if .Values.trustedHosts.existingConfig | empty }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "app.trustedHostsConfigName" . | trim }}
+  labels:
+    {{- include "common.labels" . | indent 4 }}
+    app.kubernetes.io/component: app
+data:
+  settings.trusted-hosts.php: |
+    <?php
+
+    /**
+    * @file
+    * Trusted hosts.
+    */
+
+    $settings['trusted_host_patterns'] = [
+      '^{{ .Values.ingress.host | trim }}$',
+      {{- if .Values.trustedHosts.additionalHosts }}
+      {{- range .Values.trustedHosts.additionalHosts }}
+      '^{{ . | trim }}$',
+      {{- end }}
+      {{- end }}
+    ];
+
+{{- end -}}
+{{- end -}}

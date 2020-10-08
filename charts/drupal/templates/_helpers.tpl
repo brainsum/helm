@@ -101,6 +101,14 @@ app.kubernetes.io/part-of: {{ .Values.global.project }}
 {{ end }}
 {{- end -}}
 
+{{- define "app.trustedHostsConfigName" -}}
+{{ if .Values.trustedHosts.existingConfig | empty -}}
+"{{ .Values.global.project }}-{{ .Values.global.environment }}-app-trusted-hosts"
+{{ else }}
+{{ .Values.trustedHosts.existingConfig | quote }}
+{{ end }}
+{{- end -}}
+
 {{/* Stuff for robots.txt overrides. */}}
 {{- define "app.robotsConfName" -}}
 {{ if .Values.robotsOverride.existingConfig | empty -}}

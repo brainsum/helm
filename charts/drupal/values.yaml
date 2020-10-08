@@ -35,10 +35,29 @@ gracefulUpdate:
 rollback:
   backupVersion: "latest"
 
+drupalSettingsDir: "/var/www/html/settings"
 drupalExtraEnvVars: []
 drupalExtraSettings:
-  volumes: []
-  mounts: []
+  volumes:
+    - name: email-settings
+      secret:
+        secretName: drupal-production-app-settings
+        items:
+          - key: settings.email.php
+            path: settings.email.php
+  mounts:
+    - name: email-settings
+      mountPath: /var/www/html/settings/settings.email.php
+      subPath: settings.email.php
+      readOnly: true
+
+trustedHosts:
+  enable: false
+  existingConfig: ""
+  # @note: Additional hosts only works if existingConfig is not set.
+  additionalHosts:
+    - 'localhost'
+    - 'drupal.docker.localhost'
 
 solr:
   enable: false
