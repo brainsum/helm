@@ -9,15 +9,11 @@ metadata:
 spec:
   selector:
     matchLabels:
-      {{- include "common.labels" . | indent 6 }}
-      app.kubernetes.io/component: app
-      deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-app
+      {{- include "deployment.selectorLabels" . | indent 6 }}
   template:
     metadata:
       labels:
-        {{- include "common.labels" . | indent 8 }}
-        app.kubernetes.io/component: app
-        deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-app
+        {{- include "deployment.selectorLabels" . | indent 8 }}
     spec:
       securityContext:
         fsGroup: 1000

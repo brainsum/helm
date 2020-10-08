@@ -34,12 +34,20 @@
 http{{- if .Values.ingress.tlsSecret -}}s{{- end -}}://{{ .Values.ingress.host }}
 {{- end -}}
 
-{{- define "common.labels" }}
+{{- define "deployment.selectorLabels" }}
 environment: {{ .Values.global.environment }}
-helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
-app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
 app.kubernetes.io/instance: {{ .Release.Name | quote }}
+app.kubernetes.io/part-of: {{ .Values.global.project }}
+app.kubernetes.io/component: app
+deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-app
+{{- end }}
+
+{{- define "common.labels" }}
+helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
 app.kubernetes.io/version: {{ .Chart.AppVersion }}
+app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+environment: {{ .Values.global.environment }}
+app.kubernetes.io/instance: {{ .Release.Name | quote }}
 app.kubernetes.io/part-of: {{ .Values.global.project }}
 {{- end }}
 
