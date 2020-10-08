@@ -36,6 +36,9 @@ rollback:
   backupVersion: "latest"
 
 drupalExtraEnvVars: []
+drupalExtraSettings:
+  volumes: []
+  mounts: []
 
 solr:
   enable: false

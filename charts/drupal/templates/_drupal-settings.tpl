@@ -33,12 +33,15 @@ This was moved to a separate file as this is the only mount-related code that ca
       - key: settings.redis.php
         path: settings.redis.php
 {{- end }}
+{{- if not (.Values.drupalExtraSettings.volumes | empty) -}}
+{{ toYaml .Values.drupalExtraSettings.volumes | nindent 0 }}
+{{- end -}}
 {{ end }}
 
 {{/* Drupal settings volume mounts */}}
 {{ define "drupal.settings.mounts" }}
 - name: trusted-hosts-settings
-  mountPath: /var/www/html/settings/_settings.trusted-hosts.php
+  mountPath: /var/www/html/settings/settings.trusted-hosts.php
   subPath: settings.trusted-hosts.php
   readOnly: true
 - name: email-settings
@@ -57,4 +60,7 @@ This was moved to a separate file as this is the only mount-related code that ca
   subPath: settings.redis.php
   readOnly: true
 {{- end }}
+{{- if not (.Values.drupalExtraSettings.mounts | empty) -}}
+{{ toYaml .Values.drupalExtraSettings.mounts | nindent 0 }}
+{{- end -}}
 {{ end }}
