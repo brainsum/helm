@@ -3,7 +3,17 @@ entries:
   drupal:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2020-10-08T18:30:32.669937024+02:00"
+    created: "2020-10-08T18:48:36.949796252+02:00"
+    description: Opinionated helm chart for Drupal 8/9.
+    digest: e98fd91f14a10b9175fca8eadbf7c0589c3f24ae4926c210b918c98d3e9ed448
+    name: drupal
+    type: application
+    urls:
+    - https://brainsum.github.io/helm/drupal-0.4.2.tgz
+    version: 0.4.2
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2020-10-08T18:48:36.949059894+02:00"
     description: Opinionated helm chart for Drupal 8/9.
     digest: 8f38060bdbbdb6458f37d479136ccc95e418b5270b5564c3752cd93f401ade57
     name: drupal
@@ -13,7 +23,7 @@ entries:
     version: 0.4.1
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2020-10-08T18:30:32.668875948+02:00"
+    created: "2020-10-08T18:48:36.948370261+02:00"
     description: Opinionated helm chart for Drupal 8/9.
     digest: c14aa167c77aa5bb857212d262d4cad8afb0e2a03a2355d53ac16ce1909e359d
     name: drupal
@@ -21,4 +31,4 @@ entries:
     urls:
     - https://brainsum.github.io/helm/drupal-0.4.0.tgz
     version: 0.4.0
-generated: "2020-10-08T18:30:32.667958045+02:00"
+generated: "2020-10-08T18:48:36.947537824+02:00"
