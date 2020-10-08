@@ -38,7 +38,7 @@ This was moved to a separate file as this is the only mount-related code that ca
 {{ define "drupal.settings.mounts" }}
 {{- if eq .Values.trustedHosts.enable true }}
 - name: trusted-hosts-settings
-  mountPath: /var/www/html/settings/settings.trusted-hosts.php
+  mountPath: {{ .Values.drupalSettingsDir | trim }}/settings.trusted-hosts.php
   subPath: settings.trusted-hosts.php
   readOnly: true
 {{- end }}
