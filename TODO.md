@@ -12,4 +12,6 @@
     - `checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}`
 - Create a proper repo
     - https://tech.paulcz.net/blog/creating-a-helm-chart-monorepo-part-1/
-    
+
+# Research
+- https://github.com/roboll/helmfile

@@ -1,0 +1,15 @@
+{{- if eq .Values.robotsOverride.enable true }}
+{{- if .Values.robotsOverride.existingConfig | empty }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "app.robotsConfName" . | trim }}
+  labels:
+    {{- include "common.labels" . | indent 4 }}
+    app.kubernetes.io/component: app
+data:
+  robots.txt: |
+    User-agent: *
+    Disallow: /
+{{- end -}}
+{{- end -}}

@@ -12,25 +12,20 @@ ingress:
   host: "mysite.com"
   tlsSecret: "mysite-tls-secret"
 
-# If true, overrides the robots.txt file.
-# Requirements:
-# - A secret named as {{ .Values.global.project }}-{{ .Values.global.environment }}-app-settings
-# - A 'robots.txt' key in the secret with the robots.txt content.
-# Note:
-# - This is useful for disallowing robots access for e.g. a dev site.
-# @todo: Add dedicated configmap/secret for this within the chart, allow using existing config/secret.
-robotsOverride: true
+# This is useful for disallowing robots access for e.g. a dev site.
+robotsOverride:
+  enable: true
+  existingConfig: ""
 
-app:
-  config:
-    database:
-      host: "drupal-database-mariadb.drupal.svc.cluster.local"
-  storage:
-    class: "drupal-storage"
-    size: "5Gi"
-  backupStorage:
-    class: "drupal-storage"
-    size: "5Gi"
+appDatabaseHost: "drupal-database-mariadb.drupal.svc.cluster.local"
+
+appStorage:
+  class: "drupal-storage"
+  size: "5Gi"
+
+backupStorage:
+  class: "drupal-storage"
+  size: "5Gi"
 
 gracefulUpdate:
   preStopTimeout: 60
@@ -39,3 +34,31 @@ gracefulUpdate:
 
 rollback:
   backupVersion: "latest"
+
+drupalExtraEnvVars: []
+
+solr:
+  enable: false
+  # When existingConfig is used, host and core are ignored.
+  existingConfig: ""
+  host: "solr-solrcloud-headless.drupal.svc.cluster.local"
+  core: "dislaw-solr-collection"
+
+  # When existingSecret is used, username and password are ignored.
+  authenticate: false
+  existingSecret: ""
+  username: ""
+  password: ""
+
+# @todo: Add to templates + env.
+# @todo: Use configmap/secret instead vs allow using custom ones.
+redis:
+  enable: false
+  # When existingConfig is used, host is ignored.
+  existingConfig: ""
+  host: "drupal-cache-redis-master.drupal.svc.cluster.local"
+
+  # When existingSecret is used, password is ignored.
+  authenticate: false
+  existingSecret: ""
+  password: ""

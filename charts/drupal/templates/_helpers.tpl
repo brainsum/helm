@@ -69,13 +69,52 @@ app.kubernetes.io/part-of: {{ .Values.global.project }}
 {{ define "nginx.volumes" }}
 {{ end }}
 
-{{/* @todo: Temporary for prod, need to add condition for it. */}}
+{{- define "app.solrConfName" -}}
+{{ if .Values.solr.existingConfig | empty -}}
+"{{ .Values.global.project }}-{{ .Values.global.environment }}-app-solr"
+{{ else }}
+{{ .Values.solr.existingConfig | quote }}
+{{ end }}
+{{- end -}}
+
+{{- define "app.solrSecretName" -}}
+{{ if .Values.solr.existingSecret | empty -}}
+"{{ .Values.global.project }}-{{ .Values.global.environment }}-app-solr"
+{{ else }}
+{{ .Values.solr.existingSecret | quote }}
+{{ end }}
+{{- end -}}
+
+{{- define "app.redisConfName" -}}
+{{ if .Values.redis.existingConfig | empty -}}
+"{{ .Values.global.project }}-{{ .Values.global.environment }}-app-redis"
+{{ else }}
+{{ .Values.redis.existingConfig | quote }}
+{{ end }}
+{{- end -}}
+
+{{- define "app.redisSecretName" -}}
+{{ if .Values.redis.existingSecret | empty -}}
+"{{ .Values.global.project }}-{{ .Values.global.environment }}-app-redis"
+{{ else }}
+{{ .Values.redis.existingSecret | quote }}
+{{ end }}
+{{- end -}}
+
 {{/* Stuff for robots.txt overrides. */}}
+{{- define "app.robotsConfName" -}}
+{{ if .Values.robotsOverride.existingConfig | empty -}}
+"{{ .Values.global.project }}-{{ .Values.global.environment }}-app-robotstxt"
+{{ else }}
+{{ .Values.robotsOverride.existingConfig | quote }}
+{{ end }}
+{{- end -}}
+
 {{ define "drupal.robots.volumes" }}
-{{- if eq .Values.robotsOverride true -}}
+{{- if eq .Values.robotsOverride.enable true -}}
 - name: robots-file
-  secret:
-    secretName: {{ .Values.global.project }}-{{ .Values.global.environment }}-app-settings
+  configMap:
+    name: {{ include "app.robotsConfName" . | trim }}
     items:
       - key: robots.txt
         path: robots.txt
@@ -83,7 +122,7 @@ app.kubernetes.io/part-of: {{ .Values.global.project }}
 {{ end }}
 
 {{ define "drupal.robots.mounts" }}
-{{- if eq .Values.robotsOverride true -}}
+{{- if eq .Values.robotsOverride.enable true -}}
 - name: robots-file
   mountPath: /var/www/html/web/robots.txt
   subPath: robots.txt

@@ -6,7 +6,7 @@ metadata:
     {{- include "common.labels" . | indent 4 }}
     app.kubernetes.io/component: app
 data:
-  database.host: {{ .Values.app.config.database.host | quote }}
+  database.host: {{ .Values.appDatabaseHost | quote }}
   database.port: "3306"
   drupal-base-uri: {{ .Values.ingress.host }}
   drush-site-uri: {{ include "drupal.appUri" . | quote }}

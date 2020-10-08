@@ -104,6 +104,47 @@ exec:
       configMapKeyRef:
         name: {{ .Values.global.project }}-{{ .Values.global.environment }}-app
         key: drupal-base-uri
+  {{- if eq .Values.solr.enable true }}
+  - name: SOLR_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: {{ include "app.solrConfName" . | trim }}
+        key: host
+  - name: SOLR_CORE
+    valueFrom:
+      configMapKeyRef:
+        name: {{ include "app.solrConfName" . | trim }}
+        key: core
+  {{- if eq .Values.solr.authenticate true }}
+  - name: SOLR_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: {{ include "app.solrSecretName" . | trim }}
+        key: username
+  - name: SOLR_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: {{ include "app.solrSecretName" . | trim }}
+        key: password
+  {{- end }}
+  {{- end }}
+  {{- if eq .Values.redis.enable true }}
+  - name: REDIS_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: {{ include "app.redisConfName" . | trim }}
+        key: host
+  {{- if eq .Values.redis.authenticate true }}
+  - name: REDIS_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: {{ include "app.redisSecretName" . | trim }}
+        key: password
+  {{- end }}
+  {{- end }}
+  {{- if not (.Values.drupalExtraEnvVars | empty) -}}
+  {{ toYaml .Values.drupalExtraEnvVars | nindent 2 }}
+  {{- end }}
   ports:
   - name: fastcgi
     containerPort: 9000

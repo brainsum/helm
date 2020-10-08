@@ -17,6 +17,22 @@ This was moved to a separate file as this is the only mount-related code that ca
     items:
       - key: settings.email.php
         path: settings.email.php
+{{- if eq .Values.solr.enable true}}
+- name: solr-settings
+  configMap:
+    name: {{ include "app.solrConfName" . | trim }}
+    items:
+      - key: settings.solr.php
+        path: settings.solr.php
+{{- end }}
+{{- if eq .Values.redis.enable true }}
+- name: redis-settings
+  configMap:
+    name: {{ include "app.redisConfName" . | trim }}
+    items:
+      - key: settings.redis.php
+        path: settings.redis.php
+{{- end }}
 {{ end }}
 
 {{/* Drupal settings volume mounts */}}
@@ -29,4 +45,16 @@ This was moved to a separate file as this is the only mount-related code that ca
   mountPath: /var/www/html/settings/settings.email.php
   subPath: settings.email.php
   readOnly: true
+{{- if eq .Values.solr.enable true}}
+- name: solr-settings
+  mountPath: /var/www/html/settings/settings.solr.php
+  subPath: settings.solr.php
+  readOnly: true
+{{- end }}
+{{- if eq .Values.redis.enable true }}
+- name: redis-settings
+  mountPath: /var/www/html/settings/settings.redis.php
+  subPath: settings.redis.php
+  readOnly: true
+{{- end }}
 {{ end }}

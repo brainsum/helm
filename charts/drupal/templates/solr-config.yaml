@@ -1,0 +1,32 @@
+{{- if eq .Values.solr.enable true }}
+{{- if .Values.solr.existingConfig | empty }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "app.solrConfName" . | trim }}
+  labels:
+    {{- include "common.labels" . | indent 4 }}
+    app.kubernetes.io/component: app
+data:
+  host: {{ .Values.solr.host | trim | quote }}
+  core: {{ .Values.solr.core | trim | quote }}
+
+  settings.solr.php: |
+    <?php
+
+    $config['search_api.server.solr_server']['backend_config']['connector_config']['host'] = getenv('SOLR_HOST');
+    $config['search_api.server.solr_server']['backend_config']['connector_config']['core'] = getenv('SOLR_CORE');
+
+    if (empty(getenv('SOLR_PASSWORD'))) {
+      $config['search_api.server.solr']['backend_config']['connector'] = 'solr_cloud';
+    }
+    else {
+      $config['search_api.server.solr']['backend_config']['connector'] = 'solr_cloud_basic_auth';
+      $config['search_api.server.solr']['backend_config']['connector_config']['username'] = getenv('SOLR_USERNAME');
+      $config['search_api.server.solr']['backend_config']['connector_config']['password'] = getenv('SOLR_PASSWORD');
+    }
+
+    $config['search_api.server.solr']['backend_config']['connector_config']['checkpoints_collection'] = '';
+    $config['search_api.server.solr']['backend_config']['connector_config']['stats_cache'] = 'org.apache.solr.search.stats.LRUStatsCache';
+{{- end -}}
+{{- end -}}

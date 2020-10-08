@@ -1,0 +1,72 @@
+{{- if eq .Values.redis.enable true }}
+{{- if .Values.redis.existingConfig | empty }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "app.redisConfName" . | trim }}
+  labels:
+    {{- include "common.labels" . | indent 4 }}
+    app.kubernetes.io/component: app
+data:
+  host: {{ .Values.redis.host | trim | quote }}
+  services.redis.yml: |
+    # Note that the redis module must be enabled for this to work.
+    services:
+      # Cache tag checksum backend. Used by redis and most other cache backend
+      # to deal with cache tag invalidations.
+      cache_tags.invalidator.checksum:
+        class: Drupal\redis\Cache\RedisCacheTagsChecksum
+        arguments: ['@redis.factory']
+        tags:
+          - { name: cache_tags_invalidator }
+
+      # Replaces the default lock backend with a redis implementation.
+      lock:
+        class: Drupal\Core\Lock\LockBackendInterface
+        factory: ['@redis.lock.factory', get]
+
+      # Replaces the default persistent lock backend with a redis implementation.
+      lock.persistent:
+        class: Drupal\Core\Lock\LockBackendInterface
+        factory: ['@redis.lock.factory', get]
+        arguments: [true]
+
+      # Replaces the default flood backend with a redis implementation.
+      flood:
+        class: Drupal\Core\Flood\FloodInterface
+        factory: ['@redis.flood.factory', get]
+
+  settings.redis.php: |
+    <?php
+
+    $settings['container_yamls'][] = __DIR__ . '/services.redis.yml';
+
+    $settings['redis.connection']['interface'] = 'PhpRedis';
+    $settings['redis.connection']['host'] = getenv('REDIS_HOST');
+    if (!empty(getenv('REDIS_PASSWORD'))) {
+      $settings['redis.connection']['password'] = getenv('REDIS_PASSWORD');
+    }
+
+    $settings['cache_prefix'] = "{{ .Values.global.project }}-{{ .Values.global.environment }}";
+    $settings['cache']['default'] = 'cache.backend.redis';
+    // Added by core.
+    $settings['cache']['bins']['bootstrap'] = 'cache.backend.chainedfast';
+    $settings['cache']['bins']['config'] = 'cache.backend.chainedfast';
+    $settings['cache']['bins']['menu'] = 'cache.backend.chainedfast';
+    $settings['cache']['bins']['discovery'] = 'cache.backend.chainedfast';
+    // Added by the jsonapi module.
+    $settings['cache']['bins']['jsonapi_resource_types'] = 'cache.backend.chainedfast';
+    // Added by the migrate module.
+    $settings['cache']['bins']['migrate'] = 'cache.backend.chainedfast';
+    $settings['cache']['bins']['discovery_migration'] = 'cache.backend.chainedfast';
+    // Added by the rest module.
+    $settings['cache']['bins']['rest'] = 'cache.backend.chainedfast';
+    // Added by the toolbar module.
+    $settings['cache']['bins']['toolbar'] = 'cache.backend.chainedfast';
+    $settings['queue_default'] = 'queue.redis_reliable';
+
+    $settings['queue_service_aggregator_feeds'] = 'queue.redis_reliable';
+    $settings['redis_compress_level'] = 1;
+    $settings['redis_compress_length'] = 100;
+{{- end -}}
+{{- end -}}

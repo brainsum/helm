@@ -10,5 +10,5 @@ spec:
     - "ReadWriteMany"
   resources:
     requests:
-      storage: {{ .Values.app.storage.size }}
-  storageClassName: {{ .Values.app.storage.class }}
+      storage: {{ .Values.appStorage.size }}
+  storageClassName: {{ .Values.appStorage.class }}
