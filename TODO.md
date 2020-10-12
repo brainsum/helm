@@ -18,3 +18,6 @@
 
 # Research
 - https://github.com/roboll/helmfile
+- https://github.com/zegl/kube-score
+- https://github.com/derailed/popeye
+- https://kubernetes.io/blog/2019/07/18/api-deprecations-in-1-16/
