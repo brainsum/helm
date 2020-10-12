@@ -170,18 +170,27 @@ limits:
   memory: "512Mi"
 {{ end }}
 
+{{ define "drupal.job.resources" }}
+requests:
+  cpu: "10m"
+  memory: "32Mi"
+limits:
+  cpu: "1000m"
+  memory: "2048Mi"
+{{ end }}
+
 {{ define "drupal.cron.resources" }}
-{{- include "drupal.app.resources" . }}
+{{- include "drupal.job.resources" . }}
 {{ end }}
 
 {{ define "drupal.backupJob.resources" }}
-{{- include "drupal.app.resources" . }}
+{{- include "drupal.job.resources" . }}
 {{ end }}
 
 {{ define "drupal.deployJob.resources" }}
-{{- include "drupal.app.resources" . }}
+{{- include "drupal.job.resources" . }}
 {{ end }}
 
 {{ define "drupal.backupRestoreJob.resources" }}
-{{- include "drupal.app.resources" . }}
+{{- include "drupal.job.resources" . }}
 {{ end }}
