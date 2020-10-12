@@ -3,7 +3,19 @@ entries:
   drupal:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2020-10-09T10:22:38.820417738+02:00"
+    created: "2020-10-12T15:27:42.829646718+02:00"
+    description: Opinionated helm chart for Drupal 8/9.
+    digest: 2437ccd3f086199eca1638205215e2f3b7c8b006d302993e22568e9a49aec335
+    icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
+    kubeVersion: < 1.16.0
+    name: drupal
+    type: application
+    urls:
+    - https://brainsum.github.io/helm/drupal-0.5.0.tgz
+    version: 0.5.0
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2020-10-12T15:27:42.828288423+02:00"
     description: Opinionated helm chart for Drupal 8/9.
     digest: 68a436369941cb7e8f3a4ae506c03a89a6b575cc0c682f731531c6f52e24fc54
     name: drupal
@@ -13,7 +25,7 @@ entries:
     version: 0.4.3
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2020-10-09T10:22:38.818503413+02:00"
+    created: "2020-10-12T15:27:42.827032272+02:00"
     description: Opinionated helm chart for Drupal 8/9.
     digest: e98fd91f14a10b9175fca8eadbf7c0589c3f24ae4926c210b918c98d3e9ed448
     name: drupal
@@ -23,7 +35,7 @@ entries:
     version: 0.4.2
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2020-10-09T10:22:38.817267156+02:00"
+    created: "2020-10-12T15:27:42.825995393+02:00"
     description: Opinionated helm chart for Drupal 8/9.
     digest: 8f38060bdbbdb6458f37d479136ccc95e418b5270b5564c3752cd93f401ade57
     name: drupal
@@ -33,7 +45,7 @@ entries:
     version: 0.4.1
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2020-10-09T10:22:38.816049458+02:00"
+    created: "2020-10-12T15:27:42.82455917+02:00"
     description: Opinionated helm chart for Drupal 8/9.
     digest: c14aa167c77aa5bb857212d262d4cad8afb0e2a03a2355d53ac16ce1909e359d
     name: drupal
@@ -41,4 +53,4 @@ entries:
     urls:
     - https://brainsum.github.io/helm/drupal-0.4.0.tgz
     version: 0.4.0
-generated: "2020-10-09T10:22:38.814232715+02:00"
+generated: "2020-10-12T15:27:42.822519331+02:00"
