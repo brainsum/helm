@@ -12,6 +12,9 @@
     - `checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}`
 - Create a proper repo
     - https://tech.paulcz.net/blog/creating-a-helm-chart-monorepo-part-1/
+- When possible, update to higher K8s version
+    - Current: 1.15
+    - Available in 1.16: startupProbe
 
 # Research
 - https://github.com/roboll/helmfile

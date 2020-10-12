@@ -4,11 +4,18 @@ exec:
   command: ["sleep", {{ .Values.gracefulUpdate.preStopTimeout | quote }}]
 {{- end }}
 
-{{ define "drupal.app.containerSpec" }}
+{{ define "drupal.deployment.containerSpec" }}
 {{ include "drupal.commonSpec" . -}}
   lifecycle:
     preStop:
     {{- include "common.deployment.lifecyle.preStop" . | indent 6 }}
+  livenessProbe:
+    tcpSocket:
+      port: fastcgi
+    initialDelaySeconds: 15
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 8
   resources:
   {{- include "drupal.app.resources" . | indent 4 }}
 {{ end }}

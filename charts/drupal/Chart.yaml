@@ -6,6 +6,10 @@ type: application
 version: 0.4.3
 appVersion: 1.0.0
 
+kubeVersion: < 1.16.0
+
+icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
+
 #dependencies:
 #  - repository: "https://charts.bitnami.com/bitnami"
 #    name: mariadb
