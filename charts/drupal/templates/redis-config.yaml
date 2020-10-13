@@ -47,7 +47,7 @@ data:
       $settings['redis.connection']['password'] = getenv('REDIS_PASSWORD');
     }
 
-    $settings['cache_prefix'] = "{{ .Values.global.project }}-{{ .Values.global.environment }}";
+    $settings['cache_prefix'] = "{{ .Values.global.project }}_{{ .Values.global.environment }}";
     $settings['cache']['default'] = 'cache.backend.redis';
     // Added by core.
     $settings['cache']['bins']['bootstrap'] = 'cache.backend.chainedfast';
