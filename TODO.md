@@ -15,6 +15,31 @@
 - When possible, update to higher K8s version
     - Current: 1.15
     - Available in 1.16: startupProbe
+- Autoscaler:
+    ```
+    apiVersion: autoscaling/v2beta2
+    kind: HorizontalPodAutoscaler
+    metadata:
+      name: app-autoscaler
+      namespace: reap
+      labels:
+        app: drupal-app
+    spec:
+      scaleTargetRef:
+        apiVersion: apps/v1
+        kind: Deployment
+        name: drupal-app
+      minReplicas: 1
+      maxReplicas: 1
+      metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 75
+
+    ```
 
 # Research
 - https://github.com/roboll/helmfile
