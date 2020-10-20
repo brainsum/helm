@@ -11,6 +11,7 @@ nginxImage: "drupalcr.azurecr.io/brainsum/drupal-nginx:latest"
 ingress:
   host: "mysite.com"
   tlsSecret: "mysite-tls-secret"
+  sslRedirect: false
 
 # This is useful for disallowing robots access for e.g. a dev site.
 robotsOverride:
