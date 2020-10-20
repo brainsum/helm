@@ -3,7 +3,19 @@ entries:
   drupal:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2020-10-13T18:27:42.299400542+02:00"
+    created: "2020-10-20T10:26:37.591096259+02:00"
+    description: Opinionated helm chart for Drupal 8/9.
+    digest: d5bc0af48b5c8ccb589eb09c9b2dd8effebfe0006e19cd47d4787a52aa0877fe
+    icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
+    kubeVersion: => 1.15.0
+    name: drupal
+    type: application
+    urls:
+    - https://brainsum.github.io/helm/drupal-0.6.0.tgz
+    version: 0.6.0
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2020-10-20T10:26:37.590343608+02:00"
     description: Opinionated helm chart for Drupal 8/9.
     digest: 861eac73b196015bc4bb42981d1aecf31f95b20c90f988ecdf4693dd507c02d9
     icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
@@ -15,7 +27,7 @@ entries:
     version: 0.5.3
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2020-10-13T18:27:42.298686404+02:00"
+    created: "2020-10-20T10:26:37.589554074+02:00"
     description: Opinionated helm chart for Drupal 8/9.
     digest: ef8f776bd5797c9575b7bb587071333e73d5f5067c563e5945e9db4f8cb9809c
     icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
@@ -27,7 +39,7 @@ entries:
     version: 0.5.2
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2020-10-13T18:27:42.297662558+02:00"
+    created: "2020-10-20T10:26:37.587076298+02:00"
     description: Opinionated helm chart for Drupal 8/9.
     digest: fe3d1af5582a1753e3bc605ef9991c1a49d9d01e172834bde9a603550d46ab7f
     icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
@@ -39,7 +51,7 @@ entries:
     version: 0.5.1
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2020-10-13T18:27:42.296503028+02:00"
+    created: "2020-10-20T10:26:37.586261925+02:00"
     description: Opinionated helm chart for Drupal 8/9.
     digest: 68a436369941cb7e8f3a4ae506c03a89a6b575cc0c682f731531c6f52e24fc54
     name: drupal
@@ -47,4 +59,4 @@ entries:
     urls:
     - https://brainsum.github.io/helm/drupal-0.4.3.tgz
     version: 0.4.3
-generated: "2020-10-13T18:27:42.2947478+02:00"
+generated: "2020-10-20T10:26:37.585406625+02:00"
