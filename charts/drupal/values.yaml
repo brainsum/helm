@@ -8,6 +8,9 @@ imagePullSecret: "drupal-acr-cred"
 drupalImage: "drupalcr.azurecr.io/brainsum/drupal-app:latest"
 nginxImage: "drupalcr.azurecr.io/brainsum/drupal-nginx:latest"
 
+# Setting this to "true" adds a timestamp annotation with the current date.
+annotateDeployment: false
+
 ingress:
   host: "mysite.com"
   tlsSecret: "mysite-tls-secret"

@@ -6,8 +6,10 @@ metadata:
     {{- include "common.labels" . | indent 4 }}
     app.kubernetes.io/component: app
     deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-app
-# @todo: https://helm.sh/docs/howto/charts_tips_and_tricks/#automatically-roll-deployments
-# @todo: https://stackoverflow.com/questions/58602311/will-helm-upgrade-restart-pods-even-if-they-are-not-affected-by-upgrade
+  {{- if eq (.Values.annotateDeployment | default false) true }}
+  annotations:
+    timestamp: {{ now | date "2006-01-02_15-04-05" | quote }}
+  {{- end }}
 spec:
   selector:
     matchLabels:
