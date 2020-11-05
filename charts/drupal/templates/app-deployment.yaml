@@ -33,7 +33,7 @@ spec:
           name: nginx
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: {{ .Values.nginxTargetPort | default 8080 }}
           volumeMounts:
           {{- include "common.mounts" . | indent 10 -}}
           {{- include "nginx.mounts" . | indent 10 -}}
