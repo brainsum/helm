@@ -145,3 +145,7 @@ app.kubernetes.io/part-of: {{ .Values.global.project }}
   readOnly: true
 {{- end -}}
 {{ end }}
+
+{{- define "redis.cachePrefix" -}}
+{{ .Values.global.project | replace "-" "_" }}_{{ .Values.global.environment | replace "-" "_" }}
+{{- end -}}
