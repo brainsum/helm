@@ -12,6 +12,8 @@ ingress:
   host: "mysite.com"
   tlsSecret: "mysite-tls-secret"
   sslRedirect: false
+  requestTimeout: 60
+  # additionalPaths: []
 
 # This is useful for disallowing robots access for e.g. a dev site.
 robotsOverride:

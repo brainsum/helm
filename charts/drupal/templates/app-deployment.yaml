@@ -6,6 +6,8 @@ metadata:
     {{- include "common.labels" . | indent 4 }}
     app.kubernetes.io/component: app
     deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-app
+# @todo: https://helm.sh/docs/howto/charts_tips_and_tricks/#automatically-roll-deployments
+# @todo: https://stackoverflow.com/questions/58602311/will-helm-upgrade-restart-pods-even-if-they-are-not-affected-by-upgrade
 spec:
   selector:
     matchLabels:

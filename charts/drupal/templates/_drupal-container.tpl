@@ -68,6 +68,16 @@ exec:
 - image: {{ .Values.drupalImage }}
   imagePullPolicy: {{ .Values.imagePullPolicy }}
   name: drupal
+  {{/* @todo: Add and test these for enchanced security.
+  @todo: Add the equivalent to the nginx image.
+  @todo: Allow controlling these via values.yaml
+  securityContext:
+    privileged: false
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    runAsUser: 1000
+    runAsGroup: 1000
+  */}}
   #@todo: In a rolling update this is going to break some containers (new db -> old code).
   #@todo: Rollback is also not possible (db is gonna stay the same).
   env:
