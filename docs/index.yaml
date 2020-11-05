@@ -3,7 +3,19 @@ entries:
   drupal:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2020-11-05T17:18:54.208007432+01:00"
+    created: "2020-11-05T18:17:21.465687394+01:00"
+    description: Opinionated helm chart for Drupal 8/9.
+    digest: 4adfc93e4ea59a40626ef15cb12dcd979dc64d8a288335748a22fc6bbb9aa7c1
+    icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
+    kubeVersion: => 1.15.0
+    name: drupal
+    type: application
+    urls:
+    - https://brainsum.github.io/helm/drupal-0.9.1.tgz
+    version: 0.9.1
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2020-11-05T18:17:21.46490523+01:00"
     description: Opinionated helm chart for Drupal 8/9.
     digest: c7c3aa1390675a9392a02af589a0664056c8f89013a4f0aad05de02c0fc43c27
     icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
@@ -15,7 +27,7 @@ entries:
     version: 0.9.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2020-11-05T17:18:54.207192804+01:00"
+    created: "2020-11-05T18:17:21.464058679+01:00"
     description: Opinionated helm chart for Drupal 8/9.
     digest: 7a4fc79bfa867db6ba86120176b37b1c3aadd46ba3d12716c6f84f91c31f6291
     icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
@@ -27,7 +39,7 @@ entries:
     version: 0.8.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2020-11-05T17:18:54.206398457+01:00"
+    created: "2020-11-05T18:17:21.463297103+01:00"
     description: Opinionated helm chart for Drupal 8/9.
     digest: 848ec399371f194823ec7177bb166e0b38bc06a0e1b726b6eb7f60e0b89c8c30
     icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
@@ -39,7 +51,7 @@ entries:
     version: 0.7.2
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2020-11-05T17:18:54.205551182+01:00"
+    created: "2020-11-05T18:17:21.462549951+01:00"
     description: Opinionated helm chart for Drupal 8/9.
     digest: 96379fcee112b9e1ab638efac66b799a9d33adf0346342521f0a8de7284a899a
     icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
@@ -51,7 +63,7 @@ entries:
     version: 0.7.1
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2020-11-05T17:18:54.204704825+01:00"
+    created: "2020-11-05T18:17:21.461873711+01:00"
     description: Opinionated helm chart for Drupal 8/9.
     digest: 76d8521f494c03450a48d3f9b2ff2ce266df0b4a0d4f5237037048408d364ccb
     icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
@@ -63,7 +75,7 @@ entries:
     version: 0.7.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2020-11-05T17:18:54.202927726+01:00"
+    created: "2020-11-05T18:17:21.461079971+01:00"
     description: Opinionated helm chart for Drupal 8/9.
     digest: d5bc0af48b5c8ccb589eb09c9b2dd8effebfe0006e19cd47d4787a52aa0877fe
     icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
@@ -75,7 +87,7 @@ entries:
     version: 0.6.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2020-11-05T17:18:54.202072212+01:00"
+    created: "2020-11-05T18:17:21.460378407+01:00"
     description: Opinionated helm chart for Drupal 8/9.
     digest: 861eac73b196015bc4bb42981d1aecf31f95b20c90f988ecdf4693dd507c02d9
     icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
@@ -87,7 +99,7 @@ entries:
     version: 0.5.3
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2020-11-05T17:18:54.20120338+01:00"
+    created: "2020-11-05T18:17:21.459681196+01:00"
     description: Opinionated helm chart for Drupal 8/9.
     digest: ef8f776bd5797c9575b7bb587071333e73d5f5067c563e5945e9db4f8cb9809c
     icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
@@ -99,7 +111,7 @@ entries:
     version: 0.5.2
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2020-11-05T17:18:54.200321127+01:00"
+    created: "2020-11-05T18:17:21.458947525+01:00"
     description: Opinionated helm chart for Drupal 8/9.
     digest: fe3d1af5582a1753e3bc605ef9991c1a49d9d01e172834bde9a603550d46ab7f
     icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
@@ -111,7 +123,7 @@ entries:
     version: 0.5.1
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2020-11-05T17:18:54.199481568+01:00"
+    created: "2020-11-05T18:17:21.45814061+01:00"
     description: Opinionated helm chart for Drupal 8/9.
     digest: 68a436369941cb7e8f3a4ae506c03a89a6b575cc0c682f731531c6f52e24fc54
     name: drupal
@@ -119,4 +131,4 @@ entries:
     urls:
     - https://brainsum.github.io/helm/drupal-0.4.3.tgz
     version: 0.4.3
-generated: "2020-11-05T17:18:54.198528025+01:00"
+generated: "2020-11-05T18:17:21.456389192+01:00"
