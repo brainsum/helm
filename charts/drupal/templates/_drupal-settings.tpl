@@ -29,8 +29,10 @@ This was moved to a separate file as this is the only mount-related code that ca
       - key: settings.redis.php
         path: settings.redis.php
 {{- end }}
+{{- if not (.Values.drupalExtraSettings | empty) -}}
 {{- if not (.Values.drupalExtraSettings.volumes | empty) -}}
 {{ toYaml .Values.drupalExtraSettings.volumes | nindent 0 }}
+{{- end -}}
 {{- end -}}
 {{ end }}
 
@@ -54,7 +56,9 @@ This was moved to a separate file as this is the only mount-related code that ca
   subPath: settings.redis.php
   readOnly: true
 {{- end }}
+{{- if not (.Values.drupalExtraSettings | empty) -}}
 {{- if not (.Values.drupalExtraSettings.mounts | empty) -}}
 {{ toYaml .Values.drupalExtraSettings.mounts | nindent 0 }}
+{{- end -}}
 {{- end -}}
 {{ end }}
