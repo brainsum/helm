@@ -28,6 +28,12 @@ This was moved to a separate file as this is the only mount-related code that ca
     items:
       - key: settings.redis.php
         path: settings.redis.php
+- name: redis-services
+  configMap:
+    name: {{ include "app.redisConfName" . | trim }}
+    items:
+      - key: services.redis.yml
+        path: services.redis.yml
 {{- end }}
 {{- if not (.Values.drupalExtraSettings | empty) -}}
 {{- if not (.Values.drupalExtraSettings.volumes | empty) -}}
@@ -54,6 +60,10 @@ This was moved to a separate file as this is the only mount-related code that ca
 - name: redis-settings
   mountPath: {{ .Values.drupalSettingsDir | trim }}/settings.redis.php
   subPath: settings.redis.php
+  readOnly: true
+- name: redis-services
+  mountPath: {{ .Values.drupalSettingsDir | trim }}/services.redis.yml
+  subPath: services.redis.yml
   readOnly: true
 {{- end }}
 {{- if not (.Values.drupalExtraSettings | empty) -}}
