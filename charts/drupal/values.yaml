@@ -29,12 +29,12 @@ appDatabaseHost: "drupal-database-mariadb.drupal.svc.cluster.local"
 #jobMemoryRequest: "32Mi"
 #jobCpuLimit: "1000m"
 #jobMemoryLimit: "2048Mi"
-#
+
 #deploymentCpuRequest: "10m"
 #deploymentMemoryRequest: "32Mi"
 #deploymentCpuLimit: "800m"
 #deploymentMemoryLimit: "512Mi"
-#
+
 #nginxCpuRequest: "10m"
 #nginxMemoryRequest: "32Mi"
 #nginxCpuLimit: "200m"
