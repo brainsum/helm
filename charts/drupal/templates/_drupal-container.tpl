@@ -173,20 +173,20 @@ exec:
 
 {{ define "drupal.app.resources" }}
 requests:
-  cpu: "10m"
-  memory: "32Mi"
+  cpu: {{ .Values.jobCpuRequest | default "10m" | quote }}
+  memory: {{ .Values.jobMemoryRequest | default "32Mi" | quote }}
 limits:
-  cpu: "800m"
-  memory: "512Mi"
+  cpu: {{ .Values.jobCpuLimit | default "800m" | quote }}
+  memory: {{ .Values.jobMemoryLimit | default "512Mi" | quote }}
 {{ end }}
 
 {{ define "drupal.job.resources" }}
 requests:
-  cpu: "10m"
-  memory: "32Mi"
+  cpu: {{ .Values.jobCpuRequest | default "10m" | quote }}
+  memory: {{ .Values.jobMemoryRequest | default "32Mi" | quote }}
 limits:
-  cpu: "1000m"
-  memory: "2048Mi"
+  cpu: {{ .Values.jobCpuLimit | default "1000m" | quote }}
+  memory: {{ .Values.jobMemoryLimit | default "2048Mi" | quote }}
 {{ end }}
 
 {{ define "drupal.cron.resources" }}

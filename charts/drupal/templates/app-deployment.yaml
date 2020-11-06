@@ -41,12 +41,14 @@ spec:
           {{- include "nginx.mounts" . | indent 10 -}}
           resources:
             requests:
-              cpu: "10m"
-              memory: "32Mi"
+              cpu: {{ .Values.jobCpuRequest | default "10m" | quote }}
+              memory: {{ .Values.jobMemoryRequest | default "32Mi" | quote }}
             limits:
-              cpu: "200m"
-              memory: "128Mi"
+              cpu: {{ .Values.jobCpuLimit | default "200m" | quote }}
+              memory: {{ .Values.jobMemoryLimit | default "128Mi" | quote }}
           lifecycle:
+            # @todo: Graceful shutdown needed:
+            # command: ["/bin/sh", "-c", "sleep 5; /usr/local/openresty/nginx/sbin/nginx -c /etc/nginx/nginx.conf -s quit; while pgrep -x nginx; do sleep 1; done"]
             preStop:
             {{- include "common.deployment.lifecyle.preStop" . | indent 14 }}
           livenessProbe:
