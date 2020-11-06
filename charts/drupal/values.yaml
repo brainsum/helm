@@ -11,6 +11,9 @@ nginxImage: "drupalcr.azurecr.io/brainsum/drupal-nginx:latest"
 # Setting this to "true" adds a timestamp annotation with the current date.
 annotateDeployment: false
 
+# Allows setting the port for nginx. It's recommended to use non-root containers which can only bind higher numbered ports.
+#nginxTargetPort: 8080
+
 ingress:
   host: "mysite.com"
   tlsSecret: "mysite-tls-secret"
@@ -24,6 +27,23 @@ robotsOverride:
   existingConfig: ""
 
 appDatabaseHost: "drupal-database-mariadb.drupal.svc.cluster.local"
+
+#drupalReadinessProbe:
+#  initialDelaySeconds: 10
+#  periodSeconds: 10
+#  timeoutSeconds: 5
+#  failureThreshold: 5
+#  exec:
+#    command: ["FCGI_CONNECT=127.0.0.1:9001 php-fpm-healthcheck"]
+
+#drupalFpmPort: 9000
+#drupalFpmHealthPort: 9001
+
+#nginxTargetPort: 8080
+#nginxFpmHealthPort: 9001
+#nginxHealthPort: 9002
+
+#nginxHealthPath: /ping
 
 #jobCpuRequest: "10m"
 #jobMemoryRequest: "32Mi"

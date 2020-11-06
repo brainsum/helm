@@ -11,11 +11,15 @@ exec:
     {{- include "common.deployment.lifecyle.preStop" . | indent 6 }}
   livenessProbe:
     tcpSocket:
-      port: fastcgi
+      port: fastcgi-health
     initialDelaySeconds: 15
     periodSeconds: 10
     timeoutSeconds: 5
     failureThreshold: 8
+  {{- if not (.Values.drupalReadinessProbe | empty) }}
+  readinessProbe:
+    {{- toYaml .Values.drupalReadinessProbe | nindent 4 }}
+  {{- end }}
   resources:
   {{- include "drupal.app.resources" . | indent 4 }}
 {{ end }}
@@ -164,8 +168,10 @@ exec:
   {{- end }}
   ports:
   - name: fastcgi
-    containerPort: 9000
+    containerPort: {{ .Values.drupalFpmPort | default 9000 }}
     protocol: TCP
+  - name: fastcgi-health
+    containerPort: {{ .Values.drupalFpmHealthPort | default 9000 }}
   volumeMounts:
   {{- include "common.mounts" . | indent 2 -}}
   {{- include "drupal.mounts" . | indent 2 -}}
