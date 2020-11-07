@@ -28,13 +28,40 @@ robotsOverride:
 
 appDatabaseHost: "drupal-database-mariadb.drupal.svc.cluster.local"
 
-#drupalReadinessProbe:
-#  initialDelaySeconds: 10
+#drupalLivenessProbe:
+#  initialDelaySeconds: 5
 #  periodSeconds: 10
 #  timeoutSeconds: 5
 #  failureThreshold: 5
 #  exec:
-#    command: ["FCGI_CONNECT=127.0.0.1:9001 php-fpm-healthcheck"]
+#    command:
+#      - /usr/local/bin/php-fpm-healthcheck
+#drupalReadinessProbe:
+#  initialDelaySeconds: 5
+#  periodSeconds: 10
+#  timeoutSeconds: 5
+#  failureThreshold: 5
+#  exec:
+#    command:
+#      - /usr/local/bin/php-fpm-healthcheck
+#nginxLivenessProbe:
+#  initialDelaySeconds: 5
+#  periodSeconds: 10
+#  timeoutSeconds: 5
+#  failureThreshold: 8
+#  exec:
+#    command:
+#      - /usr/bin/curl
+#      - 127.0.0.1:9002/ping
+#nginxReadinessProbe:
+#  initialDelaySeconds: 5
+#  periodSeconds: 10
+#  timeoutSeconds: 5
+#  failureThreshold: 8
+#  exec:
+#    command:
+#      - /usr/bin/curl
+#      - 127.0.0.1:9002/ping
 
 #drupalFpmPort: 9000
 #drupalFpmHealthPort: 9001

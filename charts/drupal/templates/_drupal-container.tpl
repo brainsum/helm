@@ -9,13 +9,18 @@ exec:
   lifecycle:
     preStop:
     {{- include "common.deployment.lifecyle.preStop" . | indent 6 }}
+  {{- if not (.Values.drupalLivenessProbe | empty) }}
+  livenessProbe:
+    {{- toYaml .Values.drupalLivenessProbe | nindent 4 }}
+  {{- else }}
   livenessProbe:
     tcpSocket:
       port: fastcgi-health
-    initialDelaySeconds: 15
+    initialDelaySeconds: 5
     periodSeconds: 10
     timeoutSeconds: 5
     failureThreshold: 8
+  {{- end }}
   {{- if not (.Values.drupalReadinessProbe | empty) }}
   readinessProbe:
     {{- toYaml .Values.drupalReadinessProbe | nindent 4 }}
