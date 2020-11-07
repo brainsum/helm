@@ -36,8 +36,6 @@ spec:
           ports:
             - name: http
               containerPort: {{ .Values.nginxTargetPort | default 8080 }}
-            - name: fpm-health
-              containerPort: {{ .Values.nginxFpmHealthPort | default 8080 }}
             - name: nginx-health
               containerPort: {{ .Values.nginxHealthPort | default 8080 }}
           volumeMounts:

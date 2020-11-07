@@ -67,7 +67,6 @@ appDatabaseHost: "drupal-database-mariadb.drupal.svc.cluster.local"
 #drupalFpmHealthPort: 9001
 
 #nginxTargetPort: 8080
-#nginxFpmHealthPort: 9001
 #nginxHealthPort: 9002
 
 #nginxHealthPath: /ping
