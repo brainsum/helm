@@ -184,11 +184,11 @@ exec:
 
 {{ define "drupal.app.resources" }}
 requests:
-  cpu: {{ .Values.jobCpuRequest | default "10m" | quote }}
-  memory: {{ .Values.jobMemoryRequest | default "32Mi" | quote }}
+  cpu: {{ .Values.drupalCpuRequest | default "10m" | quote }}
+  memory: {{ .Values.drupalMemoryRequest | default "32Mi" | quote }}
 limits:
-  cpu: {{ .Values.jobCpuLimit | default "800m" | quote }}
-  memory: {{ .Values.jobMemoryLimit | default "512Mi" | quote }}
+  cpu: {{ .Values.drupalCpuLimit | default "800m" | quote }}
+  memory: {{ .Values.drupalMemoryLimit | default "512Mi" | quote }}
 {{ end }}
 
 {{ define "drupal.job.resources" }}
