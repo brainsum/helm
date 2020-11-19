@@ -129,9 +129,9 @@ trustedHosts:
   enable: false
   existingConfig: ""
   # @note: Additional hosts only works if existingConfig is not set.
-  additionalHosts:
-    - 'localhost'
-    - 'drupal.docker.localhost'
+#  additionalHosts:
+#    - 'localhost'
+#    - 'drupal.docker.localhost'
 
 solr:
   enable: false
