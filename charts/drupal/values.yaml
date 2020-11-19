@@ -19,7 +19,14 @@ ingress:
   tlsSecret: "mysite-tls-secret"
   sslRedirect: false
   requestTimeout: 60
-  # additionalPaths: []
+#  additionalPaths:
+#    - path: /
+#      backend:
+#        serviceName: another-service
+#        servicePort: 80
+#  additionalHosts:
+#    - www.mysite.com
+#    - mysite.net
 
 # This is useful for disallowing robots access for e.g. a dev site.
 robotsOverride:
@@ -76,10 +83,10 @@ appDatabaseHost: "drupal-database-mariadb.drupal.svc.cluster.local"
 #jobCpuLimit: "1000m"
 #jobMemoryLimit: "2048Mi"
 
-#deploymentCpuRequest: "10m"
-#deploymentMemoryRequest: "32Mi"
-#deploymentCpuLimit: "800m"
-#deploymentMemoryLimit: "512Mi"
+#drupalCpuRequest: "10m"
+#drupalMemoryRequest: "32Mi"
+#drupalCpuLimit: "800m"
+#drupalMemoryLimit: "512Mi"
 
 #nginxCpuRequest: "10m"
 #nginxMemoryRequest: "32Mi"

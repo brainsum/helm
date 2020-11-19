@@ -149,3 +149,17 @@ app.kubernetes.io/part-of: {{ .Values.global.project }}
 {{- define "redis.cachePrefix" -}}
 {{ .Values.global.project | replace "-" "_" }}_{{ .Values.global.environment | replace "-" "_" }}
 {{- end -}}
+
+{{- define "ingress.rule" -}}
+{{- /* Note, requires special context, won't work with '.'. */ -}}
+- host: {{ .host }}
+  http:
+    paths:
+      - path: /
+        backend:
+          serviceName: {{ .global.project }}-{{ .global.environment }}-app-service
+          servicePort: 80
+      {{- if not (.ingress.additionalPaths | empty) -}}
+      {{ toYaml .ingress.additionalPaths | nindent 6 }}
+      {{- end -}}
+{{- end -}}

@@ -18,7 +18,12 @@ data:
 
     $settings['trusted_host_patterns'] = [
       '^{{ .Values.ingress.host | trim }}$',
-      {{- if .Values.trustedHosts.additionalHosts }}
+      {{- if not (.Values.ingress.additionalHosts | empty) }}
+      {{- range .Values.ingress.additionalHosts }}
+      '^{{ . | trim }}$',
+      {{- end }}
+      {{- end }}
+      {{- if not (.Values.trustedHosts.additionalHosts | empty) }}
       {{- range .Values.trustedHosts.additionalHosts }}
       '^{{ . | trim }}$',
       {{- end }}

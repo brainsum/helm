@@ -16,12 +16,14 @@ metadata:
     appgw.ingress.kubernetes.io/ssl-redirect: "true"
     {{- end }}
 spec:
-  {{/* @todo: Allow additionalHosts and tie it together with trustedHosts. Note, do not remove trusted additional hosts (useful e.g for localhost) */}}
-  {{/* @todo: Autoload rules for each host? Is there a better way? */}}
+  {{- /* @todo: Look out for new K8s/AGIC features, it's possible that we are not going to need this range-nonesense in the future. */}}
   {{- if .Values.ingress.tlsSecret }}
   tls:
     - hosts:
         - {{ .Values.ingress.host }}
+        {{- if not (.Values.ingress.additionalHosts | empty) -}}
+          {{ toYaml .Values.ingress.additionalHosts | nindent 8 }}
+        {{- end }}
       secretName: {{ .Values.ingress.tlsSecret }}
   {{- end }}
   rules:
@@ -35,3 +37,8 @@ spec:
           {{- if not (.Values.ingress.additionalPaths | empty) -}}
           {{ toYaml .Values.ingress.additionalPaths | nindent 10 }}
           {{- end }}
+    {{- if not (.Values.ingress.additionalHosts | empty) -}}
+      {{- range $.Values.ingress.additionalHosts -}}
+      {{- include "ingress.rule" (merge (dict "host" .) $.Values) | nindent 4 -}}
+      {{- end -}}
+    {{- end }}
