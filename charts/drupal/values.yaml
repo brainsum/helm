@@ -93,6 +93,10 @@ appDatabaseHost: "drupal-database-mariadb.drupal.svc.cluster.local"
 #nginxCpuLimit: "200m"
 #nginxMemoryLimit: "128Mi"
 
+# What should go into cron, results in "bash -c commandArg".
+#drupalCronJob:
+#  commandArg: "drush cron && drush node-access-rebuild-progressive:rebuild"
+
 appStorage:
   class: "drupal-storage"
   size: "5Gi"

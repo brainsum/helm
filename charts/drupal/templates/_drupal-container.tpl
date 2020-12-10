@@ -3,7 +3,7 @@
 exec:
   command: ["sleep", {{ .Values.gracefulUpdate.preStopTimeout | quote }}]
 {{- end }}
-
+{{/* @todo: ( drush twigc || true ) to a PostStart hook or smth? */}}
 {{ define "drupal.deployment.containerSpec" }}
 {{ include "drupal.commonSpec" . -}}
   lifecycle:
@@ -33,10 +33,18 @@ exec:
   command: ["/bin/bash"]
   args:
     - "-c"
-    - "drush cron"
+    - {{ include "drupal.cron.commandArg" . }}
   resources:
   {{- include "drupal.cron.resources" . | indent 4 }}
 {{ end }}
+
+{{- define "drupal.cron.commandArg" -}}
+{{- if not (.Values.drupalCronJob | empty) -}}
+{{ .Values.drupalCronJob.commandArg | default "drush cron" | quote }}
+{{- else -}}
+"drush cron"
+{{- end -}}
+{{- end -}}
 
 {{ define "drupal.backupJob.containerSpec" -}}
 {{ include "drupal.commonSpec" . -}}
@@ -66,6 +74,7 @@ exec:
 {{ define "drupal.deployJob.containerSpec" -}}
 {{ include "drupal.commonSpec" . -}}
   command: ["/bin/bash"]
+{{- /* @todo: add: `(drush twigc || true) && (drush warmer:enqueue --run-queue || true)`  */}}
   args:
     - "-c"
     - "drush deploy"
