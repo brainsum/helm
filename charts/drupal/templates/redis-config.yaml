@@ -47,6 +47,7 @@ data:
       $settings['redis.connection']['password'] = getenv('REDIS_PASSWORD');
     }
 
+    // @todo: Cache prefix should be added to a global cache settings file instead.
     $settings['cache_prefix'] = {{ include "redis.cachePrefix" . | quote }};
     $settings['cache']['default'] = 'cache.backend.redis';
     // Added by core.
@@ -65,8 +66,11 @@ data:
     $settings['cache']['bins']['toolbar'] = 'cache.backend.chainedfast';
     $settings['queue_default'] = 'queue.redis_reliable';
 
+    $settings['redis.connection']['persistent'] = TRUE;
+
     $settings['queue_service_aggregator_feeds'] = 'queue.redis_reliable';
     $settings['redis_compress_level'] = 1;
     $settings['redis_compress_length'] = 100;
+
 {{- end -}}
 {{- end -}}
