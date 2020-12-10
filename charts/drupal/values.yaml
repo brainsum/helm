@@ -27,6 +27,9 @@ ingress:
 #  additionalHosts:
 #    - www.mysite.com
 #    - mysite.net
+#  useCertManager: true
+#  certManagerIssuer: 'letsencrypt'
+#  certManagerChallengeType: 'http01'
 
 # This is useful for disallowing robots access for e.g. a dev site.
 robotsOverride:

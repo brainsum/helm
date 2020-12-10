@@ -15,6 +15,10 @@ metadata:
     {{- if eq .Values.ingress.sslRedirect true }}
     appgw.ingress.kubernetes.io/ssl-redirect: "true"
     {{- end }}
+    {{- if eq (.Values.ingress.useCertManager | default false) true }}
+    cert-manager.io/cluster-issuer: {{ required "ingress.certManagerIssuer is required" .Values.ingress.certManagerIssuer | quote }}
+    cert-manager.io/acme-challenge-type: {{ required "ingress.certManagerChallengeType is required" .Values.ingress.certManagerChallengeType | quote }}
+    {{- end }}
 spec:
   {{- /* @todo: Look out for new K8s/AGIC features, it's possible that we are not going to need this range-nonesense in the future. */}}
   {{- if .Values.ingress.tlsSecret }}
