@@ -64,6 +64,7 @@ app.kubernetes.io/part-of: {{ .Values.global.project }}
 {{ define "drupal.mounts" }}
 {{- include "drupal.settings.mounts" . -}}
 {{- include "drupal.backup.mounts" . -}}
+{{- /* @todo: Add a ramdisk volume for /tmp/drupal-storage */}}
 {{ end }}
 
 {{ define "drupal.volumes" }}
@@ -72,6 +73,8 @@ app.kubernetes.io/part-of: {{ .Values.global.project }}
 {{ end }}
 
 {{ define "nginx.mounts" }}
+{{- /* @todo: Move common.mounts here and mount them as read-only */}}
+{{- /* In your pod template, make sure that you set spec.volumes.persistentVolumeClaim.readOnly to true. This ensures the volume is attached in readonly mode. */}}
 {{ end }}
 
 {{ define "nginx.volumes" }}

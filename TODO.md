@@ -46,3 +46,7 @@
 - https://github.com/zegl/kube-score
 - https://github.com/derailed/popeye
 - https://kubernetes.io/blog/2019/07/18/api-deprecations-in-1-16/
+- https://github.com/fairwindsops/nova
+
+## Not necessarily Helm
+- https://github.com/cloudquery/cloudquery
