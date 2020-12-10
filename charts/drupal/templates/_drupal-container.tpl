@@ -3,7 +3,7 @@
 exec:
   command: ["sleep", {{ .Values.gracefulUpdate.preStopTimeout | quote }}]
 {{- end }}
-{{/* @todo: ( drush twigc || true ) to a PostStart hook or smth? */}}
+
 {{ define "drupal.deployment.containerSpec" }}
 {{ include "drupal.commonSpec" . -}}
   lifecycle:
@@ -74,13 +74,20 @@ exec:
 {{ define "drupal.deployJob.containerSpec" -}}
 {{ include "drupal.commonSpec" . -}}
   command: ["/bin/bash"]
-{{- /* @todo: add: `(drush twigc || true) && (drush warmer:enqueue --run-queue || true)`  */}}
   args:
     - "-c"
-    - "drush deploy"
+    - {{ include "drupal.deploy.commandArg" . }}
   resources:
   {{- include "drupal.deployJob.resources" . | indent 4 }}
 {{ end }}
+
+{{- define "drupal.deploy.commandArg" -}}
+{{- if not (.Values.drupalDeployJob | empty) -}}
+{{ .Values.drupalDeployJob.commandArg | default "drush deploy" | quote }}
+{{- else -}}
+"drush deploy"
+{{- end -}}
+{{- end -}}
 
 {{ define "drupal.commonSpec" }}
 - image: {{ .Values.drupalImage }}

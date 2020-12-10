@@ -97,6 +97,10 @@ appDatabaseHost: "drupal-database-mariadb.drupal.svc.cluster.local"
 #drupalCronJob:
 #  commandArg: "drush cron && drush node-access-rebuild-progressive:rebuild"
 
+# What should go into post upgrade, results in "bash -c commandArg".
+#drupalDeployJob:
+#  commandArg: "drush deploy && (drush twigc || true) && (drush warmer:enqueue --run-queue || true)"
+
 appStorage:
   class: "drupal-storage"
   size: "5Gi"
