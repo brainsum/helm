@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "tika-server.fullname" . }}
+  labels:
+    {{- include "tika-server.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: tika
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "tika-server.selectorLabels" . | nindent 4 }}
