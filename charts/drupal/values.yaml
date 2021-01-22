@@ -104,6 +104,14 @@ appDatabaseHost: "drupal-database-mariadb.drupal.svc.cluster.local"
 #drupalDeployJob:
 #  commandArg: "drush deploy && (drush twigc || true) && (drush warmer:enqueue --run-queue || true)"
 
+# @todo: Add these:
+# An object with job name suffixes as the key and cron schedule as the value. Also changes the saved filename with this as the prefix.
+# Note, this is only for simple db backups. There's also no logrotate or retention policy.
+#automatedDbBackups:
+#  daily: "0 1 * * *"
+#  weekly: "0 2 * * 6"
+#  monthly: "0 3 1 * *"
+
 appStorage:
   class: "drupal-storage"
   size: "5Gi"
