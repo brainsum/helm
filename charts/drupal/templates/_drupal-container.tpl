@@ -157,6 +157,11 @@ exec:
       configMapKeyRef:
         name: {{ include "app.solrConfName" . | trim }}
         key: core
+  - name: TIKA_SERVER_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: {{ include "app.solrConfName" . | trim }}
+        key: tika-server
   {{- if eq .Values.solr.authenticate true }}
   - name: SOLR_USERNAME
     valueFrom:

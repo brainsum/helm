@@ -159,6 +159,8 @@ solr:
   host: "solr-solrcloud-headless.drupal.svc.cluster.local"
   core: "dislaw-solr-collection"
 
+  tikaHost: "tika-server.drupal.svc.cluster.local"
+
   # When existingSecret is used, username and password are ignored.
   authenticate: false
   existingSecret: ""

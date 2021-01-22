@@ -10,7 +10,7 @@ metadata:
 data:
   host: {{ .Values.solr.host | trim | quote }}
   core: {{ .Values.solr.core | trim | quote }}
-
+  tika-server: {{ .Values.solr.tikaHost | trim | quote }}
   settings.solr.php: |
     <?php
 
@@ -28,5 +28,7 @@ data:
 
     $config['search_api.server.solr']['backend_config']['connector_config']['checkpoints_collection'] = '';
     $config['search_api.server.solr']['backend_config']['connector_config']['stats_cache'] = 'org.apache.solr.search.stats.LRUStatsCache';
+
+    $config['search_api_attachments.admin_config']['tika_server_extractor_configuration']['host'] = getenv('TIKA_SERVER_HOST');
 {{- end -}}
 {{- end -}}
