@@ -5,10 +5,24 @@
 SCRIPT=$(readlink -f "$0")
 SCRIPT_DIR=$(dirname "$SCRIPT")
 
-CHART=drupal
+CHARTS='drupal tika-server'
 
-helm lint --strict --debug "${SCRIPT_DIR}/charts/${CHART}" || exit 1
+LINT_ERRORS=false
 
-helm package "${SCRIPT_DIR}/charts/${CHART}" -d "${SCRIPT_DIR}/docs"
+for CHART in ${CHARTS}
+do
+  helm lint --strict --debug "${SCRIPT_DIR}/charts/${CHART}" || LINT_ERRORS=true
+done
+
+if [ "$LINT_ERRORS" = true ] ; then
+  echo ""
+  echo "One or more charts are invalid, please fix them!"
+  exit 1
+fi
+
+for CHART in ${CHARTS}
+do
+  helm package "${SCRIPT_DIR}/charts/${CHART}" -d "${SCRIPT_DIR}/docs"
+done
 
 helm repo index docs --url https://brainsum.github.io/helm/
