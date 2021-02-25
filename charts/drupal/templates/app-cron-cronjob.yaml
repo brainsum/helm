@@ -5,6 +5,10 @@ metadata:
   labels:
     {{- include "common.labels" . | indent 4 }}
     app.kubernetes.io/component: app
+  {{- if eq (.Values.annotateDeployment | default false) true }}
+  annotations:
+    timestamp: {{ now | date "2006-01-02_15-04-05" | quote }}
+  {{- end }}
 spec:
   schedule: "0 1 * * *"
   jobTemplate:
