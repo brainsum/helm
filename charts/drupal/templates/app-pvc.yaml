@@ -5,6 +5,7 @@ metadata:
   labels:
     {{- include "common.labels" . | indent 4 }}
     app.kubernetes.io/component: storage
+    helm.sh/resource-policy: keep
 spec:
   accessModes:
     - "ReadWriteMany"
