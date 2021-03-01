@@ -11,7 +11,7 @@ LINT_ERRORS=false
 
 for CHART in ${CHARTS}
 do
-  helm lint --strict --debug "${SCRIPT_DIR}/charts/${CHART}" || LINT_ERRORS=true
+  helm lint --debug "${SCRIPT_DIR}/charts/${CHART}" || LINT_ERRORS=true
 done
 
 if [ "$LINT_ERRORS" = true ] ; then
