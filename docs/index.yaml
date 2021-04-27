@@ -3,7 +3,21 @@ entries:
   drupal:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2021-03-01T13:35:40.284667337+01:00"
+    created: "2021-04-27T19:16:08.198050814+02:00"
+    description: Opinionated helm chart for Drupal 8/9.
+    digest: 453b1a079d584f3672d3c505fa9faad4a73fb68da6f33073a1789127dcae95db
+    icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
+    keywords:
+    - drupal
+    kubeVersion: => 1.19.0
+    name: drupal
+    type: application
+    urls:
+    - https://brainsum.github.io/helm/drupal-0.17.0.tgz
+    version: 0.17.0
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2021-04-27T19:16:08.196480265+02:00"
     description: Opinionated helm chart for Drupal 8/9.
     digest: f648fab0e70c08bb49f8b30203e352998a76732ae7bde52380874661f7d8849f
     icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
@@ -15,86 +29,12 @@ entries:
     urls:
     - https://brainsum.github.io/helm/drupal-0.16.1.tgz
     version: 0.16.1
-  - apiVersion: v2
-    appVersion: 1.0.0
-    created: "2021-03-01T13:35:40.283792463+01:00"
-    description: Opinionated helm chart for Drupal 8/9.
-    digest: 7f9f527b51fce204cea20c094877c9703d6e3addedae9c22ac15a18f359e391d
-    icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
-    keywords:
-    - drupal
-    kubeVersion: => 1.15.0
-    name: drupal
-    type: application
-    urls:
-    - https://brainsum.github.io/helm/drupal-0.16.0.tgz
-    version: 0.16.0
-  - apiVersion: v2
-    appVersion: 1.0.0
-    created: "2021-03-01T13:35:40.282876707+01:00"
-    description: Opinionated helm chart for Drupal 8/9.
-    digest: 54173c0f064566dce300c99e34d3e4576dd859746b60fda0c749464a85b54392
-    icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
-    kubeVersion: => 1.15.0
-    name: drupal
-    type: application
-    urls:
-    - https://brainsum.github.io/helm/drupal-0.15.1.tgz
-    version: 0.15.1
-  - apiVersion: v2
-    appVersion: 1.0.0
-    created: "2021-03-01T13:35:40.281993072+01:00"
-    description: Opinionated helm chart for Drupal 8/9.
-    digest: 5028f56b5aee7010cc03b2b5d5264d0a8a25893ad6d9646bfd3794719f7b05c9
-    icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
-    kubeVersion: => 1.15.0
-    name: drupal
-    type: application
-    urls:
-    - https://brainsum.github.io/helm/drupal-0.15.0.tgz
-    version: 0.15.0
-  - apiVersion: v2
-    appVersion: 1.0.0
-    created: "2021-03-01T13:35:40.281027582+01:00"
-    description: Opinionated helm chart for Drupal 8/9.
-    digest: 155d957123d595344305560b53bd8b0fb10dc49e62acdf73de055e6e44513a37
-    icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
-    kubeVersion: => 1.15.0
-    name: drupal
-    type: application
-    urls:
-    - https://brainsum.github.io/helm/drupal-0.14.0.tgz
-    version: 0.14.0
-  - apiVersion: v2
-    appVersion: 1.0.0
-    created: "2021-03-01T13:35:40.280083778+01:00"
-    description: Opinionated helm chart for Drupal 8/9.
-    digest: 42b026141a11ad1bb6eb75809914b33448ae0284c3150f98aeaec50b9b1bf30b
-    icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
-    kubeVersion: => 1.15.0
-    name: drupal
-    type: application
-    urls:
-    - https://brainsum.github.io/helm/drupal-0.13.0.tgz
-    version: 0.13.0
-  - apiVersion: v2
-    appVersion: 1.0.0
-    created: "2021-03-01T13:35:40.279221541+01:00"
-    description: Opinionated helm chart for Drupal 8/9.
-    digest: da1b6faaa0d18ba2ef52e776db5544ab1bc5c9783bbb29af37a9bf959fa9adb6
-    icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
-    kubeVersion: => 1.15.0
-    name: drupal
-    type: application
-    urls:
-    - https://brainsum.github.io/helm/drupal-0.12.2.tgz
-    version: 0.12.2
   tika-server:
   - apiVersion: v2
     appVersion: "1.25"
-    created: "2021-03-01T13:35:40.285166763+01:00"
+    created: "2021-04-27T19:16:08.198787447+02:00"
     description: Chart for Apache Tika server.
-    digest: 89e4dcb4441bcbff55c1eff3e25cd83b6597fc1fcf36ff4b824f92f915f0d0ea
+    digest: 392984cc4ac452194aecc4c24fc746c345ebebcc2ecc8dcbe7eb3ad3affe649d
     icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
     keywords:
     - apache
@@ -110,4 +50,4 @@ entries:
     urls:
     - https://brainsum.github.io/helm/tika-server-1.0.0.tgz
     version: 1.0.0
-generated: "2021-03-01T13:35:40.278057665+01:00"
+generated: "2021-04-27T19:16:08.194644177+02:00"
