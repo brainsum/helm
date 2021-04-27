@@ -21,9 +21,12 @@ ingress:
   requestTimeout: 60
 #  additionalPaths:
 #    - path: /
+#      pathType: Prefix
 #      backend:
-#        serviceName: another-service
-#        servicePort: 80
+#        service:
+#          name: another-service
+#          port:
+#            name: http
 #  additionalHosts:
 #    - www.mysite.com
 #    - mysite.net

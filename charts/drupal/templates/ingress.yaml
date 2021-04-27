@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Values.global.project }}-{{ .Values.global.environment }}-ingress
@@ -35,9 +35,12 @@ spec:
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: {{ .Values.global.project }}-{{ .Values.global.environment }}-app-service
-              servicePort: 80
+              service:
+                name: {{ .Values.global.project }}-{{ .Values.global.environment }}-app-service
+                port:
+                  name: http
           {{- if not (.Values.ingress.additionalPaths | empty) -}}
           {{ toYaml .Values.ingress.additionalPaths | nindent 10 }}
           {{- end }}

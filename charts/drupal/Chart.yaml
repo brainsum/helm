@@ -3,17 +3,13 @@ name: drupal
 description: Opinionated helm chart for Drupal 8/9.
 type: application
 
-version: 0.16.1
+version: 0.17.0
 appVersion: 1.0.0
 
-kubeVersion: => 1.15.0
+kubeVersion: => 1.19.0
 
 icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
 
 keywords:
   - drupal
 
-#dependencies:
-#  - repository: "https://charts.bitnami.com/bitnami"
-#    name: mariadb
-#    version: 7.10.3
