@@ -1,5 +1,12 @@
 # To-dos
 
+## Additional
+- drupalExtraEnvVars
+  - This should be spilt up:
+    - drupalCommonEnvVars
+    - drupalInstanceEnvVars
+  - Similarly, drupalExtraSettings and the others should be like this
+  - Reasoning: having a common.values.yaml, and a dev.values.yaml reduces the overhead and allows managing values in a single place for many instances.
 - TBD: Configs with settings.php files which should be mounted:
     - Add them to the chart and refactor the settings to use getenv() for values that change
     - Add env vars for setting the individual values
