@@ -159,9 +159,11 @@ app.kubernetes.io/part-of: {{ .Values.global.project }}
   http:
     paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: {{ .global.project }}-{{ .global.environment }}-app-service
-          servicePort: 80
+          service:
+            name: {{ .global.project }}-{{ .global.environment }}-app-service
+            port: http
       {{- if not (.ingress.additionalPaths | empty) -}}
       {{ toYaml .ingress.additionalPaths | nindent 6 }}
       {{- end -}}
