@@ -3,7 +3,21 @@ entries:
   drupal:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2021-04-27T19:16:08.198050814+02:00"
+    created: "2021-04-30T18:09:13.630828557+02:00"
+    description: Opinionated helm chart for Drupal 8/9.
+    digest: c852a3194ec5dd43f90d7d8d260deeec9f16f3fc17ef4358c87a08cc8b0ae31c
+    icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
+    keywords:
+    - drupal
+    kubeVersion: => 1.19.0
+    name: drupal
+    type: application
+    urls:
+    - https://brainsum.github.io/helm/drupal-0.17.1.tgz
+    version: 0.17.1
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2021-04-30T18:09:13.629834121+02:00"
     description: Opinionated helm chart for Drupal 8/9.
     digest: 453b1a079d584f3672d3c505fa9faad4a73fb68da6f33073a1789127dcae95db
     icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
@@ -17,7 +31,7 @@ entries:
     version: 0.17.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2021-04-27T19:16:08.196480265+02:00"
+    created: "2021-04-30T18:09:13.627832336+02:00"
     description: Opinionated helm chart for Drupal 8/9.
     digest: f648fab0e70c08bb49f8b30203e352998a76732ae7bde52380874661f7d8849f
     icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
@@ -32,9 +46,9 @@ entries:
   tika-server:
   - apiVersion: v2
     appVersion: "1.25"
-    created: "2021-04-27T19:16:08.198787447+02:00"
+    created: "2021-04-30T18:09:13.631320809+02:00"
     description: Chart for Apache Tika server.
-    digest: 392984cc4ac452194aecc4c24fc746c345ebebcc2ecc8dcbe7eb3ad3affe649d
+    digest: 0fc46b0bdfc603e4bff43492eab8c62784ff052c48c49545e684dcb936a29006
     icon: https://www.brainsum.com/themes/custom/brainsum_theme/images/dist/favicon/favicon-32x32.png
     keywords:
     - apache
@@ -50,4 +64,4 @@ entries:
     urls:
     - https://brainsum.github.io/helm/tika-server-1.0.0.tgz
     version: 1.0.0
-generated: "2021-04-27T19:16:08.194644177+02:00"
+generated: "2021-04-30T18:09:13.625893631+02:00"
