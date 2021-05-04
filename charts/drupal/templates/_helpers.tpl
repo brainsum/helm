@@ -163,7 +163,8 @@ app.kubernetes.io/part-of: {{ .Values.global.project }}
         backend:
           service:
             name: {{ .global.project }}-{{ .global.environment }}-app-service
-            port: http
+            port:
+              name: http
       {{- if not (.ingress.additionalPaths | empty) -}}
       {{ toYaml .ingress.additionalPaths | nindent 6 }}
       {{- end -}}
