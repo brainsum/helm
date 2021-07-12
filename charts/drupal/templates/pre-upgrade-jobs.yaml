@@ -29,6 +29,6 @@ spec:
       {{- include "drupal.volumes" . | indent 6 -}}
       restartPolicy: Never
       containers:
-      {{- include "drupal.backupJob.containerSpec" . | indent 6 -}}
+      {{- include "drupal.backupJob.containerSpec" (merge (dict "_isJob" true) .) | indent 6 -}}
 {{/*---*/}}
 {{/*# @todo: Add job for saving files, too.*/}}

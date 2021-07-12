@@ -147,6 +147,8 @@ drupalExtraSettings:
       subPath: settings.email.php
       readOnly: true
 
+jobExtraEnvVars: []
+
 trustedHosts:
   enable: false
   existingConfig: ""

@@ -192,6 +192,12 @@ exec:
   {{- if not (.Values.drupalExtraEnvVars | empty) -}}
   {{ toYaml .Values.drupalExtraEnvVars | nindent 2 }}
   {{- end }}
+  {{/* @todo: Handle duplicated env vars. */}}
+  {{- if eq (._isJob | default false) true -}}
+  {{- if not (.Values.jobExtraEnvVars | empty) -}}
+  {{ toYaml .Values.jobExtraEnvVars | nindent 2 }}
+  {{- end }}
+  {{- end }}
   ports:
   - name: fastcgi
     containerPort: {{ .Values.drupalFpmPort | default 9000 }}
