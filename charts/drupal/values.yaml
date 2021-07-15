@@ -41,6 +41,14 @@ robotsOverride:
 
 appDatabaseHost: "drupal-database-mariadb.drupal.svc.cluster.local"
 
+#drupalStartupProbe:
+#  initialDelaySeconds: 5
+#  periodSeconds: 10
+#  timeoutSeconds: 5
+#  failureThreshold: 5
+#  exec:
+#    command:
+#      - /usr/local/bin/php-fpm-healthcheck
 #drupalLivenessProbe:
 #  initialDelaySeconds: 5
 #  periodSeconds: 10
@@ -57,6 +65,16 @@ appDatabaseHost: "drupal-database-mariadb.drupal.svc.cluster.local"
 #  exec:
 #    command:
 #      - /usr/local/bin/php-fpm-healthcheck
+
+#nginxStartupProbe:
+#  initialDelaySeconds: 5
+#  periodSeconds: 10
+#  timeoutSeconds: 5
+#  failureThreshold: 8
+#  exec:
+#    command:
+#      - /usr/bin/curl
+#      - 127.0.0.1:9002/ping
 #nginxLivenessProbe:
 #  initialDelaySeconds: 5
 #  periodSeconds: 10
