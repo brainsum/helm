@@ -1,0 +1,19 @@
+{{- if eq (.Values.dedicatedFrontend.enable | default false) true }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-app-service
+  labels:
+    {{- include "common.labels" . | indent 4 }}
+    app.kubernetes.io/component: app
+    deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-app
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: {{ .Values.nginxTargetPort | default 8080 }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "deployment.frontendSelectorLabels" . | indent 4 }}
+{{- end -}}

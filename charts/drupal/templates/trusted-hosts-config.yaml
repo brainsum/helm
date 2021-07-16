@@ -25,6 +25,9 @@ data:
 
     $settings['trusted_host_patterns'] = [
       '^{{ .Values.ingress.host | trim | replace "." "\\." }}$',
+      {{- if eq (.Values.dedicatedFrontend.enable | default false) true }}
+      '^{{ .Values.dedicatedFrontend.ingress.host | trim | replace "." "\\." }}$',
+      {{- end }}
       {{- if not (.Values.ingress.additionalHosts | empty) }}
       {{- range .Values.ingress.additionalHosts }}
       '^{{ . | trim }}$',

@@ -11,8 +11,63 @@ nginxImage: "drupalcr.azurecr.io/brainsum/drupal-nginx:latest"
 # Setting this to "true" adds a timestamp annotation with the current date.
 annotateDeployment: false
 
-# Allows setting the port for nginx. It's recommended to use non-root containers which can only bind higher numbered ports.
-#nginxTargetPort: 8080
+# Enable and configure if you want to have a separate deployment and ingress for user-facing and admin-facing parts of the app.
+# E.g. www.mysite.com and admin.mysite.com.
+# This can be useful if your frontend can live with 128Mb of RAM, but admin can eat up 2Gb or more.
+dedicatedFrontend:
+  enable: true
+  ingress:
+    host: "frontend.mysite.com"
+    tlsSecret: "frontend-mysite-tls-secret"
+    sslRedirect: false
+    requestTimeout: 180
+    certManager:
+      enable: true
+      issuer: 'letsencrypt'
+      challengeType: 'http01'
+    # These paths should be redirected to the admin part.
+    # @note, the redirect logic only supports .ingress.host, not additionalHosts.
+    redirectorImage: library/nginx
+    redirectorImageTag: 1.21.1-alpine
+    redirectedPaths: []
+    # These should be disabled altogether.
+    # @note, the block logic only supports ingress.host, not additionalHosts.
+    blockerImage: library/nginx
+    blockerImageTag: 1.21.1-alpine
+    blockedPaths: []
+#    # @note, additionalPaths and additionalHosts are not fully tested.
+#    additionalPaths:
+#      - path: /
+#        pathType: Prefix
+#        backend:
+#          service:
+#            name: another-service
+#            port:
+#              name: http
+#    additionalHosts:
+#      - www.mysite.com
+#      - mysite.net
+  resources:
+    drupalCpuRequest: "10m"
+    drupalMemoryRequest: "32Mi"
+    drupalCpuLimit: "800m"
+    drupalMemoryLimit: "512Mi"
+    nginxCpuRequest: "10m"
+    nginxMemoryRequest: "32Mi"
+    nginxCpuLimit: "200m"
+    nginxMemoryLimit: "128Mi"
+  scaling:
+    useAutoscaler: true
+    minReplicas: 1
+    maxReplicas: 10
+  drupalExtraEnvVars: []
+  nginxExtraEnvVars: []
+
+#
+# @todo: Deny access to admin paths on frontend ingress
+# - Maybe redirect to the admin URL?
+#
+
 
 ingress:
   host: "mysite.com"
@@ -97,6 +152,7 @@ appDatabaseHost: "drupal-database-mariadb.drupal.svc.cluster.local"
 #drupalFpmPort: 9000
 #drupalFpmHealthPort: 9001
 
+# Allows setting the port for nginx. It's recommended to use non-root containers which can only bind higher numbered ports.
 #nginxTargetPort: 8080
 #nginxHealthPort: 9002
 

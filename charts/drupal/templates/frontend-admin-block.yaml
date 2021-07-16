@@ -1,0 +1,56 @@
+# @todo: Simple service + config + nginx for blocking any request
+{{- if eq (.Values.dedicatedFrontend.enable | default false) true }}
+{{- if not (.Values.dedicatedFrontend.ingress.blockedPaths | empty) }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-admin-block-config
+  labels:
+    {{- include "common.labels" . | indent 4 }}
+    app.kubernetes.io/component: app
+data:
+  default.conf: |
+    server {
+      listen {{ .Values.nginxTargetPort | default 8080 }} default_server ipv6only=off;
+      server_name _;
+      return 404;
+    }
+
+    server {
+      listen 127.0.0.1:{{ .Values.nginxHealthPort | default 9002 | quote }} default_server;
+
+      server_name internal.health;
+
+      location ~ ^/(status|ping)$ {
+        allow 127.0.0.1;
+        deny all;
+
+        access_log off;
+
+        return 200 "Ok.";
+      }
+    }
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-admin-block-service
+  labels:
+    {{- include "common.labels" . | indent 4 }}
+    app.kubernetes.io/component: app
+    deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-admin-block-app
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: {{ .Values.nginxTargetPort | default 8080 }}
+      protocol: TCP
+      name: http
+  selector:
+  {{- include "deployment.frontendAdminBlockerSelectors" . | indent 4 }}
+---
+{{- $blockerImage := (include "frontend-admin.image-name" (dict "name" .Values.dedicatedFrontend.ingress.blockerImage "tag" .Values.dedicatedFrontend.ingress.blockerImageTag) | trim ) -}}
+{{- include "frontend-admin.deployment" (merge (dict "_deploymentType" "block" "_deploymentSelectorName" "deployment.frontendAdminBlockerSelectors" "_image" $blockerImage) .) }}
+{{- end }}
+{{- end }}

@@ -1,7 +1,7 @@
 {{/* Drupal container spec */}}
 {{ define "common.deployment.lifecyle.preStop" }}
 exec:
-  command: ["sleep", {{ .Values.gracefulUpdate.preStopTimeout | quote }}]
+  command: ["sleep", {{ .Values.gracefulUpdate.preStopTimeout | default "15" | quote }}]
 {{- end }}
 
 {{ define "drupal.deployment.containerSpec" }}
@@ -38,7 +38,11 @@ exec:
     failureThreshold: 8
   {{- end }}
   resources:
+  {{- if eq (._isFrontend | default false) true }}
+  {{- include "drupal.frontend.resources" . | indent 4 }}
+  {{- else }}
   {{- include "drupal.app.resources" . | indent 4 }}
+  {{- end }}
 {{ end }}
 {{ define "drupal.cron.containerSpec" }}
 {{ include "drupal.commonSpec" . -}}
@@ -203,8 +207,15 @@ exec:
         key: password
   {{- end }}
   {{- end }}
+  {{/* @todo: Handle duplicated env vars. */}}
+  {{- if eq (._isFrontend | default false) true -}}
+  {{- if not (.Values.dedicatedFrontend.drupalExtraEnvVars | empty) -}}
+  {{ toYaml .Values.dedicatedFrontend.drupalExtraEnvVars | nindent 2 }}
+  {{- end }}
+  {{- else }}
   {{- if not (.Values.drupalExtraEnvVars | empty) -}}
   {{ toYaml .Values.drupalExtraEnvVars | nindent 2 }}
+  {{- end }}
   {{- end }}
   {{/* @todo: Handle duplicated env vars. */}}
   {{- if eq (._isJob | default false) true -}}
@@ -221,6 +232,15 @@ exec:
   volumeMounts:
   {{- include "common.mounts" . | indent 2 -}}
   {{- include "drupal.mounts" . | indent 2 -}}
+{{ end }}
+
+{{ define "drupal.frontend.resources" }}
+requests:
+  cpu: {{ .Values.dedicatedFrontend.resources.drupalCpuRequest | default "10m" | quote }}
+  memory: {{ .Values.dedicatedFrontend.resources.drupalMemoryRequest | default "32Mi" | quote }}
+limits:
+  cpu: {{ .Values.dedicatedFrontend.resources.drupalCpuLimit | default "200m" | quote }}
+  memory: {{ .Values.dedicatedFrontend.resources.drupalMemoryLimit | default "256Mi" | quote }}
 {{ end }}
 
 {{ define "drupal.app.resources" }}

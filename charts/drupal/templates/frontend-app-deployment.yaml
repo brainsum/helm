@@ -1,11 +1,12 @@
+{{- if eq (.Values.dedicatedFrontend.enable | default false) true }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.global.project }}-{{ .Values.global.environment }}-app
+  name: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-app
   labels:
     {{- include "common.labels" . | indent 4 }}
     app.kubernetes.io/component: app
-    deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-app
+    deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-app
   {{- if eq (.Values.annotateDeployment | default false) true }}
   annotations:
     timestamp: {{ now | date "2006-01-02_15-04-05" | quote }}
@@ -13,11 +14,11 @@ metadata:
 spec:
   selector:
     matchLabels:
-      {{- include "deployment.selectorLabels" . | indent 6 }}
+      {{- include "deployment.frontendSelectorLabels" . | indent 6 }}
   template:
     metadata:
       labels:
-        {{- include "deployment.selectorLabels" . | indent 8 }}
+        {{- include "deployment.frontendSelectorLabels" . | indent 8 }}
       {{- if eq (.Values.annotateDeployment | default false) true }}
       annotations:
         timestamp: {{ now | date "2006-01-02_15-04-05" | quote }}
@@ -27,13 +28,12 @@ spec:
         fsGroup: 1000
       imagePullSecrets:
         - name: {{ .Values.imagePullSecret }}
-      # @todo: Does this handle multiple containers writing at the same time?
       volumes:
       {{- include "common.volumes" . | indent 6 -}}
       {{- include "drupal.volumes" . | indent 6 -}}
       terminationGracePeriodSeconds: {{ .Values.gracefulUpdate.terminationGracePeriodSeconds | default "15" }}
       containers:
-        {{- include "drupal.deployment.containerSpec" . | indent 8 -}}
+        {{- include "drupal.deployment.containerSpec" (merge (dict "_isFrontend" true) .) | indent 8 -}}
         - image: {{ .Values.nginxImage }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           name: nginx
@@ -50,16 +50,16 @@ spec:
               value: {{ .Values.nginxHealthPort | default 8080 | quote }}
             - name: NGINX_TARGET_PORT
               value: {{ .Values.nginxTargetPort | default 8080 | quote }}
-            {{- if not (.Values.nginxExtraEnvVars | empty) -}}
-            {{ toYaml .Values.nginxExtraEnvVars | nindent 12 }}
+            {{- if not (.Values.dedicatedFrontend.nginxExtraEnvVars | empty) -}}
+            {{ toYaml .Values.dedicatedFrontend.nginxExtraEnvVars | nindent 12 }}
             {{- end }}
           resources:
             requests:
-              cpu: {{ .Values.nginxCpuRequest | default "10m" | quote }}
-              memory: {{ .Values.nginxMemoryRequest | default "32Mi" | quote }}
+              cpu: {{ .Values.dedicatedFrontend.resources.nginxCpuRequest | default "10m" | quote }}
+              memory: {{ .Values.dedicatedFrontend.resources.nginxMemoryRequest | default "32Mi" | quote }}
             limits:
-              cpu: {{ .Values.nginxCpuLimit | default "200m" | quote }}
-              memory: {{ .Values.nginxMemoryLimit | default "128Mi" | quote }}
+              cpu: {{ .Values.dedicatedFrontend.resources.nginxCpuLimit | default "200m" | quote }}
+              memory: {{ .Values.dedicatedFrontend.resources.nginxMemoryLimit | default "128Mi" | quote }}
           lifecycle:
             # @todo: Graceful shutdown needed:
             # command: ["/bin/sh", "-c", "sleep 5; /usr/local/openresty/nginx/sbin/nginx -c /etc/nginx/nginx.conf -s quit; while pgrep -x nginx; do sleep 1; done"]
@@ -99,3 +99,4 @@ spec:
           startupProbe:
             {{- toYaml .Values.nginxStartupProbe | nindent 12 }}
           {{- end }}
+{{- end -}}

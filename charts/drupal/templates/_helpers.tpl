@@ -34,12 +34,21 @@
 http{{- if .Values.ingress.tlsSecret -}}s{{- end -}}://{{ .Values.ingress.host }}
 {{- end -}}
 
-{{- define "deployment.selectorLabels" }}
+{{- define "deployment.commonSelectors" }}
 environment: {{ .Values.global.environment }}
 app.kubernetes.io/instance: {{ .Release.Name | quote }}
 app.kubernetes.io/part-of: {{ .Values.global.project }}
 app.kubernetes.io/component: app
+{{- end }}
+
+{{- define "deployment.selectorLabels" }}
+{{- include "deployment.commonSelectors" . }}
 deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-app
+{{- end }}
+
+{{- define "deployment.frontendSelectorLabels" }}
+{{- include "deployment.commonSelectors" . }}
+deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-app
 {{- end }}
 
 {{- define "common.labels" }}
@@ -167,5 +176,22 @@ app.kubernetes.io/part-of: {{ .Values.global.project }}
               name: http
       {{- if not (.ingress.additionalPaths | empty) -}}
       {{ toYaml .ingress.additionalPaths | nindent 6 }}
+      {{- end -}}
+{{- end -}}
+
+{{- define "frontend-ingress.rule" -}}
+{{- /* Note, requires special context, won't work with '.'. */ -}}
+- host: {{ .host }}
+  http:
+    paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .global.project }}-{{ .global.environment }}-frontend-app-service
+            port:
+              name: http
+      {{- if not (.dedicatedFrontend.ingress.additionalPaths | empty) -}}
+      {{ toYaml .dedicatedFrontend.ingress.additionalPaths | nindent 6 }}
       {{- end -}}
 {{- end -}}
