@@ -45,6 +45,14 @@ spec:
           volumeMounts:
           {{- include "common.mounts" . | indent 10 -}}
           {{- include "nginx.mounts" . | indent 10 -}}
+          env:
+            - name: NGINX_HEALTH_PORT
+              value: {{ .Values.nginxHealthPort | default 8080 | quote }}
+            - name: NGINX_TARGET_PORT
+              value: {{ .Values.nginxTargetPort | default 8080 | quote }}
+            {{- if not (.Values.nginxExtraEnvVars | empty) -}}
+            {{ toYaml .Values.nginxExtraEnvVars | nindent 12 }}
+            {{- end }}
           resources:
             requests:
               cpu: {{ .Values.nginxCpuRequest | default "10m" | quote }}
@@ -68,7 +76,7 @@ spec:
             failureThreshold: 8
             httpGet:
               port: nginx-health
-              path: {{ .Values.nginxHealthPath | default "/user/login" | quote }}
+              path: {{ .Values.nginxHealthPath | default "/status" | quote }}
               httpHeaders:
                 - name: "Host"
                   value: {{ .Values.ingress.host | trim | quote }}
@@ -77,4 +85,17 @@ spec:
           {{- if not (.Values.nginxReadinessProbe | empty) }}
           readinessProbe:
             {{- toYaml .Values.nginxReadinessProbe | nindent 12 }}
+          {{- else }}
+          readinessProbe:
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 8
+            httpGet:
+              port: nginx-health
+              path: {{ .Values.nginxHealthPath | default "/healthz" | quote }}
+              httpHeaders:
+                - name: "Host"
+                  value: {{ .Values.ingress.host | trim | quote }}
+              scheme: HTTP
           {{- end }}

@@ -166,6 +166,7 @@ drupalExtraSettings:
       readOnly: true
 
 jobExtraEnvVars: []
+nginxExtraEnvVars: []
 
 trustedHosts:
   enable: false

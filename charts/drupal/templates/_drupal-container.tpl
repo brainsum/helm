@@ -24,6 +24,14 @@ exec:
   {{- if not (.Values.drupalReadinessProbe | empty) }}
   readinessProbe:
     {{- toYaml .Values.drupalReadinessProbe | nindent 4 }}
+  {{- else }}
+  readinessProbe:
+    tcpSocket:
+      port: fastcgi-health
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 8
   {{- end }}
   resources:
   {{- include "drupal.app.resources" . | indent 4 }}
