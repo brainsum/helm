@@ -9,6 +9,10 @@ exec:
   lifecycle:
     preStop:
     {{- include "common.deployment.lifecyle.preStop" . | indent 6 }}
+  {{- if not (.Values.drupalStartupProbe | empty) }}
+  startupProbe:
+    {{- toYaml .Values.drupalStartupProbe | nindent 4 }}
+  {{- end }}
   {{- if not (.Values.drupalLivenessProbe | empty) }}
   livenessProbe:
     {{- toYaml .Values.drupalLivenessProbe | nindent 4 }}

@@ -99,3 +99,7 @@ spec:
                   value: {{ .Values.ingress.host | trim | quote }}
               scheme: HTTP
           {{- end }}
+          {{- if not (.Values.nginxStartupProbe | empty) }}
+          startupProbe:
+            {{- toYaml .Values.nginxStartupProbe | nindent 12 }}
+          {{- end }}
