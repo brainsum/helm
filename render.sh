@@ -15,8 +15,8 @@ ENVIRONMENTS='staging production'
 
 for ENVIRONMENT in ${ENVIRONMENTS}
 do
-  VALUE_FILE="${SCRIPT_DIR}/tmp/values/${CHART}/${ENVIRONMENT}/values.yaml"
-  OUTPUT_DIR="${SCRIPT_DIR}/rendered/${CHART}/${ENVIRONMENT}"
+  VALUE_FILE="${SCRIPT_DIR}/.rendervalues/${CHART}/${ENVIRONMENT}/values.yaml"
+  OUTPUT_DIR="${SCRIPT_DIR}/.rendered/${CHART}/${ENVIRONMENT}"
   RELEASE_NAME="${PROJECT}-${ENVIRONMENT}"
 
   echo "Rendering to ${OUTPUT_DIR}"
@@ -31,9 +31,9 @@ done
 # ----------------------- #
 CHART="tika-server"
 CHART_PATH="${SCRIPT_DIR}/charts/${CHART}"
-OUTPUT_DIR="${SCRIPT_DIR}/rendered/${CHART}"
-VALUE_FILE="${SCRIPT_DIR}/tmp/values/${CHART}/values.yaml"
-OUTPUT_DIR="${SCRIPT_DIR}/rendered/${CHART}"
+OUTPUT_DIR="${SCRIPT_DIR}/.rendered/${CHART}"
+VALUE_FILE="${SCRIPT_DIR}/.rendervalues/${CHART}/values.yaml"
+OUTPUT_DIR="${SCRIPT_DIR}/.rendered/${CHART}"
 RELEASE_NAME="${PROJECT}"
 
 #     -f "${VALUE_FILE}" \
