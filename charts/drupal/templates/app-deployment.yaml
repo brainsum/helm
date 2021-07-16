@@ -70,34 +70,30 @@ spec:
             {{- toYaml .Values.nginxLivenessProbe | nindent 12 }}
           {{- else }}
           livenessProbe:
+            exec:
+              command:
+                - "/bin/sh"
+                - "-c"
+                - "/usr/bin/curl --silent --show-error --fail --header 'Host: internal.health' http://127.0.0.1:${NGINX_HEALTH_PORT}/status"
+            failureThreshold: 3
             initialDelaySeconds: 5
             periodSeconds: 10
             timeoutSeconds: 5
-            failureThreshold: 8
-            httpGet:
-              port: nginx-health
-              path: {{ .Values.nginxHealthPath | default "/status" | quote }}
-              httpHeaders:
-                - name: "Host"
-                  value: {{ .Values.ingress.host | trim | quote }}
-              scheme: HTTP
           {{- end }}
           {{- if not (.Values.nginxReadinessProbe | empty) }}
           readinessProbe:
             {{- toYaml .Values.nginxReadinessProbe | nindent 12 }}
           {{- else }}
           readinessProbe:
+            exec:
+              command:
+                - "/bin/sh"
+                - "-c"
+                - "/usr/bin/curl --silent --show-error --fail --header 'Host: internal.health' http://127.0.0.1:${NGINX_HEALTH_PORT}/healthz"
+            failureThreshold: 3
             initialDelaySeconds: 5
             periodSeconds: 10
             timeoutSeconds: 5
-            failureThreshold: 8
-            httpGet:
-              port: nginx-health
-              path: {{ .Values.nginxHealthPath | default "/healthz" | quote }}
-              httpHeaders:
-                - name: "Host"
-                  value: {{ .Values.ingress.host | trim | quote }}
-              scheme: HTTP
           {{- end }}
           {{- if not (.Values.nginxStartupProbe | empty) }}
           startupProbe:

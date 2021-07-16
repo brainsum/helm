@@ -158,6 +158,8 @@ exec:
       configMapKeyRef:
         name: {{ .Values.global.project }}-{{ .Values.global.environment }}-app
         key: drupal-base-uri
+  - name: FCGI_CONNECT
+    value: "127.0.0.1:{{ .Values.drupalFpmHealthPort | default 9000 }}"
   {{- if eq .Values.solr.enable true }}
   - name: SOLR_HOST
     valueFrom:
