@@ -15,7 +15,7 @@ annotateDeployment: false
 # E.g. www.mysite.com and admin.mysite.com.
 # This can be useful if your frontend can live with 128Mb of RAM, but admin can eat up 2Gb or more.
 dedicatedFrontend:
-  enable: true
+  enable: false
   ingress:
     host: "frontend.mysite.com"
     tlsSecret: "frontend-mysite-tls-secret"
