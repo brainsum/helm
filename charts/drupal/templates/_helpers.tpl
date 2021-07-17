@@ -178,20 +178,3 @@ app.kubernetes.io/part-of: {{ .Values.global.project }}
       {{ toYaml .ingress.additionalPaths | nindent 6 }}
       {{- end -}}
 {{- end -}}
-
-{{- define "frontend-ingress.rule" -}}
-{{- /* Note, requires special context, won't work with '.'. */ -}}
-- host: {{ .host }}
-  http:
-    paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: {{ .global.project }}-{{ .global.environment }}-frontend-app-service
-            port:
-              name: http
-      {{- if not (.dedicatedFrontend.ingress.additionalPaths | empty) -}}
-      {{ toYaml .dedicatedFrontend.ingress.additionalPaths | nindent 6 }}
-      {{- end -}}
-{{- end -}}

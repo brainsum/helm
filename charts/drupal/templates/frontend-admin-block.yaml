@@ -1,4 +1,3 @@
-# @todo: Simple service + config + nginx for blocking any request
 {{- if eq (.Values.dedicatedFrontend.enable | default false) true }}
 {{- if not (.Values.dedicatedFrontend.ingress.blockedPaths | empty) }}
 apiVersion: v1
@@ -11,13 +10,13 @@ metadata:
 data:
   default.conf: |
     server {
-      listen {{ .Values.nginxTargetPort | default 8080 }} default_server ipv6only=off;
+      listen {{ .Values.nginxTargetPort | default 8080 | int }} default_server ipv6only=off;
       server_name _;
       return 404;
     }
 
     server {
-      listen 127.0.0.1:{{ .Values.nginxHealthPort | default 9002 | quote }} default_server;
+      listen 127.0.0.1:{{ .Values.nginxHealthPort | default 9002 | int }} default_server;
 
       server_name internal.health;
 
@@ -39,7 +38,7 @@ metadata:
   labels:
     {{- include "common.labels" . | indent 4 }}
     app.kubernetes.io/component: app
-    deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-admin-block-app
+    deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-admin-block-app-service
 spec:
   type: ClusterIP
   ports:

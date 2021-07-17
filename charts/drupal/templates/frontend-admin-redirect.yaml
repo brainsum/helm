@@ -1,4 +1,3 @@
-# @todo: Simple service + config + nginx for redirecting to the admin path
 {{- if eq (.Values.dedicatedFrontend.enable | default false) true }}
 {{- if not (.Values.dedicatedFrontend.ingress.redirectedPaths | empty) }}
 apiVersion: v1
@@ -11,7 +10,7 @@ metadata:
 data:
   default.conf: |
     server {
-      listen {{ .Values.nginxTargetPort | default 8080 }} default_server ipv6only=off;
+      listen {{ .Values.nginxTargetPort | default 8080 | int }} default_server ipv6only=off;
 
       server_name _;
       # @todo: don't assume https
@@ -19,7 +18,7 @@ data:
     }
 
     server {
-      listen 127.0.0.1:{{ .Values.nginxHealthPort | default 9002 | quote }} default_server;
+      listen 127.0.0.1:{{ .Values.nginxHealthPort | default 9002 | int }} default_server;
 
       server_name internal.health;
 
@@ -41,7 +40,7 @@ metadata:
   labels:
     {{- include "common.labels" . | indent 4 }}
     app.kubernetes.io/component: app
-    deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-admin-redirect-app
+    deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-admin-redirect-app-service
 spec:
   type: ClusterIP
   ports:

@@ -19,7 +19,7 @@ spec:
     scaleDown:
       stabilizationWindowSeconds: 300
       policies:
-        - type: Pod
+        - type: Pods
           value: 2
           periodSeconds: 30
         - type: Percent
