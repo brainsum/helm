@@ -13,6 +13,7 @@ spec:
   schedule: "0 1 * * *"
   jobTemplate:
     spec:
+      backoffLimit: 3
       template:
         metadata:
           name: {{ .Values.global.project }}-{{ .Values.global.environment }}-cron
