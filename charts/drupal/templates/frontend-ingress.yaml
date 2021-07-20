@@ -65,4 +65,14 @@ spec:
       {{- include "frontend-ingress.rule" (merge (dict "_host" $host ) $defaultVars ) | nindent 4 -}}
       {{- end -}}
       {{- end }}
+
+    {{- if not (.Values.dedicatedFrontend.ingress.redirectedHosts | empty) -}}
+    {{- $defaultVars := . -}}
+    {{ range $host := .Values.dedicatedFrontend.ingress.redirectedHosts }}
+    - host: {{ $host | trim }}
+      http:
+        paths:
+        {{- include "frontend-ingress.redirect-path" (merge (dict "_path" "/" ) $defaultVars) | nindent 8 -}}
+    {{ end }}
+    {{- end }}
 {{- end -}}

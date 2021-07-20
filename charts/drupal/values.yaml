@@ -22,10 +22,13 @@ annotateDeployment: false
 dedicatedFrontend:
   enable: false
   ingress:
-    host: "frontend.mysite.com"
+    host: "www.mysite.com"
+    # Additional hosts where the app should be available.
     additionalHosts: []
-#      - www.mysite.com
-#      - mysite.net
+#      - www.mysite.net
+    # Additional hosts that should be redirected to dedicatedFrontend.ingress.host.
+    redirectedHosts: []
+#      - mysite.com
     tlsSecret: "frontend-mysite-tls-secret"
     sslRedirect: false
     requestTimeout: 180
