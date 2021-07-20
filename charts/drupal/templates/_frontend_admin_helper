@@ -129,30 +129,24 @@ spec:
       {{- end -}}
 {{- end -}}
 
-{{- define "frontend-ingress.block-rule" -}}
+{{- define "frontend-ingress.block-path" -}}
 {{- /* Note, requires special context, won't work with '.'. */ -}}
-- host: {{ .dedicatedFrontend.ingress.host }}
-  http:
-    paths:
-      - path: {{ .path }}
-        pathType: Prefix
-        backend:
-          service:
-            name: {{ .global.project }}-{{ .global.environment }}-frontend-admin-block-app-service
-            port:
-              name: http
+- path: {{ .path }}
+  pathType: Prefix
+  backend:
+    service:
+      name: {{ .global.project }}-{{ .global.environment }}-frontend-admin-block-app-service
+      port:
+        name: http
 {{- end -}}
 
-{{- define "frontend-ingress.redirect-rule" -}}
+{{- define "frontend-ingress.redirect-path" -}}
 {{- /* Note, requires special context, won't work with '.'. */ -}}
-- host: {{ .dedicatedFrontend.ingress.host }}
-  http:
-    paths:
-      - path: {{ .path }}
-        pathType: Prefix
-        backend:
-          service:
-            name: {{ .global.project }}-{{ .global.environment }}-frontend-admin-redirect-app-service
-            port:
-              name: http
+- path: {{ .path }}
+  pathType: Prefix
+  backend:
+    service:
+      name: {{ .global.project }}-{{ .global.environment }}-frontend-admin-redirect-app-service
+      port:
+        name: http
 {{- end -}}

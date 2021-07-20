@@ -32,17 +32,6 @@ spec:
       secretName: {{ .Values.dedicatedFrontend.ingress.tlsSecret }}
   {{- end }}
   rules:
-    {{- if not (.Values.dedicatedFrontend.ingress.blockedPaths | empty) }}
-    {{- range $.Values.dedicatedFrontend.ingress.blockedPaths -}}
-    {{- include "frontend-ingress.block-rule" (merge (dict "path" . ) $.Values) | nindent 4 -}}
-    {{- end -}}
-    {{- end }}
-
-    {{- if not (.Values.dedicatedFrontend.ingress.redirectedPaths | empty) }}
-    {{- range $.Values.dedicatedFrontend.ingress.redirectedPaths -}}
-    {{- include "frontend-ingress.redirect-rule" (merge (dict "path" . ) $.Values) | nindent 4 -}}
-    {{- end -}}
-    {{- end }}
     - host: {{ .Values.dedicatedFrontend.ingress.host }}
       http:
         paths:
@@ -55,7 +44,19 @@ spec:
                   name: http
           {{- if not (.Values.dedicatedFrontend.ingress.additionalPaths | empty) -}}
           {{ toYaml .Values.dedicatedFrontend.ingress.additionalPaths | nindent 10 }}
-      {{- end }}
+          {{- end }}
+
+          {{- if not (.Values.dedicatedFrontend.ingress.redirectedPaths | empty) -}}
+          {{- range $.Values.dedicatedFrontend.ingress.redirectedPaths -}}
+          {{- include "frontend-ingress.redirect-path" (merge (dict "path" . ) $.Values) | nindent 10 -}}
+          {{- end -}}
+          {{- end }}
+          {{- if not (.Values.dedicatedFrontend.ingress.blockedPaths | empty) -}}
+          {{- range $.Values.dedicatedFrontend.ingress.blockedPaths -}}
+          {{- include "frontend-ingress.block-path" (merge (dict "path" . ) $.Values) | nindent 10 -}}
+          {{- end -}}
+          {{- end }}
+
       {{- if not (.Values.dedicatedFrontend.ingress.additionalHosts | empty) -}}
       {{- range $.Values.dedicatedFrontend.ingress.additionalHosts -}}
       {{- include "frontend-ingress.rule" (merge (dict "host" . "_isFrontend" true) $.Values) | nindent 4 -}}
