@@ -164,17 +164,17 @@ app.kubernetes.io/part-of: {{ .Values.global.project }}
 
 {{- define "ingress.rule" -}}
 {{- /* Note, requires special context, won't work with '.'. */ -}}
-- host: {{ .host }}
+- host: {{ ._host }}
   http:
     paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: {{ .global.project }}-{{ .global.environment }}-app-service
+            name: {{ .Values.global.project }}-{{ .Values.global.environment }}-app-service
             port:
               name: http
-      {{- if not (.ingress.additionalPaths | empty) -}}
-      {{ toYaml .ingress.additionalPaths | nindent 6 }}
+      {{- if not (.Values.ingress.additionalPaths | empty) -}}
+      {{ toYaml .Values.ingress.additionalPaths | nindent 6 }}
       {{- end -}}
 {{- end -}}

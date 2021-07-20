@@ -113,40 +113,52 @@ spec:
 {{- end }}
 
 {{- define "frontend-ingress.rule" -}}
-{{- /* Note, requires special context, won't work with '.'. */ -}}
-- host: {{ .host }}
+{{- /* Note, requires special context */ -}}
+- host: {{ ._host }}
   http:
     paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: {{ .global.project }}-{{ .global.environment }}-frontend-app-service
+            name: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-app-service
             port:
               name: http
-      {{- if not (.dedicatedFrontend.ingress.additionalPaths | empty) -}}
-      {{ toYaml .dedicatedFrontend.ingress.additionalPaths | nindent 6 }}
+      {{- if not (.Values.dedicatedFrontend.ingress.additionalPaths | empty) -}}
+      {{ toYaml .Values.dedicatedFrontend.ingress.additionalPaths | nindent 6 }}
       {{- end -}}
+
+      {{- $defaultVars := . -}}
+      {{- if not (.Values.dedicatedFrontend.ingress.redirectedPaths | empty) -}}
+      {{- range $path := $.Values.dedicatedFrontend.ingress.redirectedPaths -}}
+      {{- include "frontend-ingress.redirect-path" (merge (dict "_path" $path ) $defaultVars) | nindent 6 -}}
+      {{- end -}}
+      {{- end }}
+      {{- if not (.Values.dedicatedFrontend.ingress.blockedPaths | empty) -}}
+      {{- range $path := $.Values.dedicatedFrontend.ingress.blockedPaths -}}
+      {{- include "frontend-ingress.block-path" (merge (dict "_path" $path ) $defaultVars) | nindent 6 -}}
+      {{- end -}}
+      {{- end }}
 {{- end -}}
 
 {{- define "frontend-ingress.block-path" -}}
-{{- /* Note, requires special context, won't work with '.'. */ -}}
-- path: {{ .path }}
+{{- /* Note, requires special context. */ -}}
+- path: {{ ._path }}
   pathType: Prefix
   backend:
     service:
-      name: {{ .global.project }}-{{ .global.environment }}-frontend-admin-block-app-service
+      name: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-admin-block-app-service
       port:
         name: http
 {{- end -}}
 
 {{- define "frontend-ingress.redirect-path" -}}
-{{- /* Note, requires special context, won't work with '.'. */ -}}
-- path: {{ .path }}
+{{- /* Note, requires special context. */ -}}
+- path: {{ ._path }}
   pathType: Prefix
   backend:
     service:
-      name: {{ .global.project }}-{{ .global.environment }}-frontend-admin-redirect-app-service
+      name: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-admin-redirect-app-service
       port:
         name: http
 {{- end -}}

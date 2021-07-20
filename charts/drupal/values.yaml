@@ -23,6 +23,9 @@ dedicatedFrontend:
   enable: false
   ingress:
     host: "frontend.mysite.com"
+    additionalHosts: []
+#      - www.mysite.com
+#      - mysite.net
     tlsSecret: "frontend-mysite-tls-secret"
     sslRedirect: false
     requestTimeout: 180
@@ -41,7 +44,7 @@ dedicatedFrontend:
     blockerImageTag: 1.21.1-alpine
     blockedPaths: []
 #    # @note, additionalPaths and additionalHosts are not fully tested.
-#    additionalPaths:
+    additionalPaths: []
 #      - path: /
 #        pathType: Prefix
 #        backend:
@@ -49,9 +52,7 @@ dedicatedFrontend:
 #            name: another-service
 #            port:
 #              name: http
-#    additionalHosts:
-#      - www.mysite.com
-#      - mysite.net
+
   resources:
     drupalCpuRequest: "10m"
     drupalMemoryRequest: "32Mi"
@@ -79,7 +80,7 @@ ingress:
   tlsSecret: "mysite-tls-secret"
   sslRedirect: false
   requestTimeout: 60
-#  additionalPaths:
+  additionalPaths: []
 #    - path: /
 #      pathType: Prefix
 #      backend:
@@ -87,7 +88,7 @@ ingress:
 #          name: another-service
 #          port:
 #            name: http
-#  additionalHosts:
+  additionalHosts: []
 #    - www.mysite.com
 #    - mysite.net
 #  useCertManager: true

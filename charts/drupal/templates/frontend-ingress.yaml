@@ -47,19 +47,22 @@ spec:
           {{- end }}
 
           {{- if not (.Values.dedicatedFrontend.ingress.redirectedPaths | empty) -}}
-          {{- range $.Values.dedicatedFrontend.ingress.redirectedPaths -}}
-          {{- include "frontend-ingress.redirect-path" (merge (dict "path" . ) $.Values) | nindent 10 -}}
+          {{- $defaultVars := . -}}
+          {{- range $path := $.Values.dedicatedFrontend.ingress.redirectedPaths -}}
+          {{- include "frontend-ingress.redirect-path" (merge (dict "_path" $path ) $defaultVars) | nindent 10 -}}
           {{- end -}}
           {{- end }}
           {{- if not (.Values.dedicatedFrontend.ingress.blockedPaths | empty) -}}
-          {{- range $.Values.dedicatedFrontend.ingress.blockedPaths -}}
-          {{- include "frontend-ingress.block-path" (merge (dict "path" . ) $.Values) | nindent 10 -}}
+          {{- $defaultVars := . -}}
+          {{- range $path := $.Values.dedicatedFrontend.ingress.blockedPaths -}}
+          {{- include "frontend-ingress.block-path" (merge (dict "_path" $path ) $defaultVars) | nindent 10 -}}
           {{- end -}}
           {{- end }}
 
       {{- if not (.Values.dedicatedFrontend.ingress.additionalHosts | empty) -}}
-      {{- range $.Values.dedicatedFrontend.ingress.additionalHosts -}}
-      {{- include "frontend-ingress.rule" (merge (dict "host" . "_isFrontend" true) $.Values) | nindent 4 -}}
+      {{- $defaultVars := . -}}
+      {{- range $host := .Values.dedicatedFrontend.ingress.additionalHosts -}}
+      {{- include "frontend-ingress.rule" (merge (dict "_host" $host ) $defaultVars ) | nindent 4 -}}
       {{- end -}}
       {{- end }}
 {{- end -}}

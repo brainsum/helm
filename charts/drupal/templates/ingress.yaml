@@ -45,7 +45,8 @@ spec:
           {{ toYaml .Values.ingress.additionalPaths | nindent 10 }}
           {{- end }}
     {{- if not (.Values.ingress.additionalHosts | empty) -}}
-      {{- range $.Values.ingress.additionalHosts -}}
-      {{- include "ingress.rule" (merge (dict "host" .) $.Values) | nindent 4 -}}
-      {{- end -}}
+    {{- $defaultVars := . -}}
+    {{- range $host := $.Values.ingress.additionalHosts -}}
+    {{- include "ingress.rule" (merge (dict "_host" .) $defaultVars) | nindent 4 -}}
+    {{- end -}}
     {{- end }}
