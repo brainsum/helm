@@ -28,7 +28,10 @@ spec:
         - {{ .Values.dedicatedFrontend.ingress.host }}
           {{- if not (.Values.dedicatedFrontend.ingress.additionalHosts | empty) -}}
           {{ toYaml .Values.dedicatedFrontend.ingress.additionalHosts | nindent 8 }}
-      {{- end }}
+          {{- end }}
+          {{- if not (.Values.dedicatedFrontend.ingress.redirectedHosts | empty) -}}
+          {{ toYaml .Values.dedicatedFrontend.ingress.redirectedHosts | nindent 8 }}
+          {{- end }}
       secretName: {{ .Values.dedicatedFrontend.ingress.tlsSecret }}
   {{- end }}
   rules:
