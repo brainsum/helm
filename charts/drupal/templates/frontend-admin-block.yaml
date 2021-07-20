@@ -34,7 +34,7 @@ data:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-admin-block-service
+  name: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-admin-block-app-service
   labels:
     {{- include "common.labels" . | indent 4 }}
     app.kubernetes.io/component: app
