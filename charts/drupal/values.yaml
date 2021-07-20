@@ -11,6 +11,11 @@ nginxImage: "drupalcr.azurecr.io/brainsum/drupal-nginx:latest"
 # Setting this to "true" adds a timestamp annotation with the current date.
 annotateDeployment: false
 
+#
+# @todo: Rewrite env vars. We need common, drupal, frontend ones and merge them properly.
+# @todo: Rewrite volumes and mounts. We need common, drupal, frontend ones and merge them properly.
+#
+
 # Enable and configure if you want to have a separate deployment and ingress for user-facing and admin-facing parts of the app.
 # E.g. www.mysite.com and admin.mysite.com.
 # This can be useful if your frontend can live with 128Mb of RAM, but admin can eat up 2Gb or more.
@@ -22,7 +27,7 @@ dedicatedFrontend:
     sslRedirect: false
     requestTimeout: 180
     certManager:
-      enable: true
+      enable: false
       issuer: 'letsencrypt'
       challengeType: 'http01'
     # These paths should be redirected to the admin part.
