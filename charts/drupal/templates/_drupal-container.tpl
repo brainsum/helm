@@ -212,10 +212,9 @@ exec:
   {{- if not (.Values.dedicatedFrontend.drupalExtraEnvVars | empty) -}}
   {{ toYaml .Values.dedicatedFrontend.drupalExtraEnvVars | nindent 2 }}
   {{- end }}
-  {{- else }}
+  {{- end }}
   {{- if not (.Values.drupalExtraEnvVars | empty) -}}
   {{ toYaml .Values.drupalExtraEnvVars | nindent 2 }}
-  {{- end }}
   {{- end }}
   {{/* @todo: Handle duplicated env vars. */}}
   {{- if eq (._isJob | default false) true -}}
