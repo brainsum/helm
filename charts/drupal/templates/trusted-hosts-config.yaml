@@ -25,20 +25,29 @@ data:
 
     $settings['trusted_host_patterns'] = [
       '^{{ .Values.ingress.host | trim | replace "." "\\." }}$',
+      {{- if not (.Values.ingress.additionalHosts | empty) }}
+      {{- range $host := .Values.ingress.additionalHosts }}
+      '^{{ $host | trim | replace "." "\\." }}$',
+      {{- end }}
+      {{- end }}
       {{- if eq (.Values.dedicatedFrontend.enable | default false) true }}
       '^{{ .Values.dedicatedFrontend.ingress.host | trim | replace "." "\\." }}$',
+      {{- if not (.Values.dedicatedFrontend.ingress.additionalHosts | empty) }}
+      {{- range $host := .Values.dedicatedFrontend.ingress.additionalHosts }}
+      '^{{ $host | trim | replace "." "\\." }}$',
       {{- end }}
-      {{- if not (.Values.ingress.additionalHosts | empty) }}
-      {{- range .Values.ingress.additionalHosts }}
-      '^{{ . | trim }}$',
+      {{- end }}
+      {{- if not (.Values.dedicatedFrontend.ingress.redirectedHosts | empty) }}
+      {{- range $host := .Values.dedicatedFrontend.ingress.redirectedHosts }}
+      '^{{ $host | trim | replace "." "\\." }}$',
+      {{- end }}
       {{- end }}
       {{- end }}
       {{- if not (.Values.trustedHosts.additionalHosts | empty) }}
-      {{- range .Values.trustedHosts.additionalHosts }}
-      '^{{ . | trim | replace "." "\\." }}$',
+      {{- range $host := .Values.trustedHosts.additionalHosts }}
+      '^{{ $host | trim | replace "." "\\." }}$',
       {{- end }}
       {{- end }}
     ];
-
 {{- end -}}
 {{- end -}}
