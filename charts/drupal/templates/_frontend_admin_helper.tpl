@@ -2,6 +2,11 @@
 {{ .name }}:{{ .tag }}
 {{ end }}
 
+{{- define "deployment.frontendRedirectSelectors" }}
+{{- include "deployment.commonSelectors" . }}
+deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-redirect-app
+{{- end }}
+
 {{- define "deployment.frontendAdminRedirectSelectors" }}
 {{- include "deployment.commonSelectors" . }}
 deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-admin-redirect-app
@@ -19,14 +24,15 @@ deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-fronte
   _image
 */}}
 {{- define "frontend-admin.deployment" }}
+{{ $commonId := ternary "admin-" "" (._isAdmin | default false) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-admin-{{ ._deploymentType }}-app
+  name: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-{{ $commonId }}{{ ._deploymentType }}-app
   labels:
     {{- include "common.labels" . | indent 4 }}
     app.kubernetes.io/component: app
-    deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-admin-{{ ._deploymentType }}-app
+    deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-{{ $commonId }}{{ ._deploymentType }}-app
 spec:
   selector:
     matchLabels:
@@ -39,19 +45,16 @@ spec:
       terminationGracePeriodSeconds: {{ .Values.gracefulUpdate.terminationGracePeriodSeconds | default "15" }}
       securityContext:
         fsGroup: 1000
-{{/* @todo: Try pulling the default nginx image, allow customizing it later.. */}}
-{{/*      imagePullSecrets:*/}}
-{{/*        - name: {{ .Values.imagePullSecret }}*/}}
       volumes:
         - name: common-config
           configMap:
-            name: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-admin-common-config
+            name: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-nginx-config
             items:
               - key: nginx.conf
                 path: nginx.conf
         - name: vhost-config
           configMap:
-            name: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-admin-{{ ._deploymentType }}-config
+            name: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-{{ $commonId }}{{ ._deploymentType }}-config
             items:
               - key: default.conf
                 path: default.conf
@@ -112,7 +115,7 @@ spec:
             timeoutSeconds: 5
 {{- end }}
 
-{{- define "frontend-ingress.rule" -}}
+{{- define "frontend-ingress.admin-rule" -}}
 {{- /* Note, requires special context */ -}}
 - host: {{ ._host }}
   http:
@@ -131,17 +134,28 @@ spec:
       {{- $defaultVars := . -}}
       {{- if not (.Values.dedicatedFrontend.ingress.redirectedPaths | empty) -}}
       {{- range $path := $.Values.dedicatedFrontend.ingress.redirectedPaths -}}
-      {{- include "frontend-ingress.redirect-path" (merge (dict "_path" $path ) $defaultVars) | nindent 6 -}}
+      {{- include "frontend-ingress.admin-redirect-path" (merge (dict "_path" $path ) $defaultVars) | nindent 6 -}}
       {{- end -}}
       {{- end }}
       {{- if not (.Values.dedicatedFrontend.ingress.blockedPaths | empty) -}}
       {{- range $path := $.Values.dedicatedFrontend.ingress.blockedPaths -}}
-      {{- include "frontend-ingress.block-path" (merge (dict "_path" $path ) $defaultVars) | nindent 6 -}}
+      {{- include "frontend-ingress.admin-block-path" (merge (dict "_path" $path ) $defaultVars) | nindent 6 -}}
       {{- end -}}
       {{- end }}
 {{- end -}}
 
 {{- define "frontend-ingress.block-path" -}}
+{{- /* Note, requires special context. */ -}}
+- path: {{ ._path }}
+  pathType: Prefix
+  backend:
+    service:
+      name: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-block-app-service
+      port:
+        name: http
+{{- end -}}
+
+{{- define "frontend-ingress.admin-block-path" -}}
 {{- /* Note, requires special context. */ -}}
 - path: {{ ._path }}
   pathType: Prefix
@@ -153,6 +167,17 @@ spec:
 {{- end -}}
 
 {{- define "frontend-ingress.redirect-path" -}}
+{{- /* Note, requires special context. */ -}}
+- path: {{ ._path }}
+  pathType: Prefix
+  backend:
+    service:
+      name: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-redirect-app-service
+      port:
+        name: http
+{{- end -}}
+
+{{- define "frontend-ingress.admin-redirect-path" -}}
 {{- /* Note, requires special context. */ -}}
 - path: {{ ._path }}
   pathType: Prefix

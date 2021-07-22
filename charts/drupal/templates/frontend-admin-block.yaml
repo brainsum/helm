@@ -50,6 +50,6 @@ spec:
   {{- include "deployment.frontendAdminBlockerSelectors" . | indent 4 }}
 ---
 {{- $blockerImage := (include "frontend-admin.image-name" (dict "name" .Values.dedicatedFrontend.ingress.blockerImage "tag" .Values.dedicatedFrontend.ingress.blockerImageTag) | trim ) -}}
-{{- include "frontend-admin.deployment" (merge (dict "_deploymentType" "block" "_deploymentSelectorName" "deployment.frontendAdminBlockerSelectors" "_image" $blockerImage) .) }}
+{{- include "frontend-admin.deployment" (merge (dict "_isAdmin" true "_deploymentType" "block" "_deploymentSelectorName" "deployment.frontendAdminBlockerSelectors" "_image" $blockerImage) .) }}
 {{- end }}
 {{- end }}

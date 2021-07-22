@@ -52,20 +52,20 @@ spec:
           {{- if not (.Values.dedicatedFrontend.ingress.redirectedPaths | empty) -}}
           {{- $defaultVars := . -}}
           {{- range $path := $.Values.dedicatedFrontend.ingress.redirectedPaths -}}
-          {{- include "frontend-ingress.redirect-path" (merge (dict "_path" $path ) $defaultVars) | nindent 10 -}}
+          {{- include "frontend-ingress.admin-redirect-path" (merge (dict "_path" $path ) $defaultVars) | nindent 10 -}}
           {{- end -}}
           {{- end }}
           {{- if not (.Values.dedicatedFrontend.ingress.blockedPaths | empty) -}}
           {{- $defaultVars := . -}}
           {{- range $path := $.Values.dedicatedFrontend.ingress.blockedPaths -}}
-          {{- include "frontend-ingress.block-path" (merge (dict "_path" $path ) $defaultVars) | nindent 10 -}}
+          {{- include "frontend-ingress.admin-block-path" (merge (dict "_path" $path ) $defaultVars) | nindent 10 -}}
           {{- end -}}
           {{- end }}
 
       {{- if not (.Values.dedicatedFrontend.ingress.additionalHosts | empty) -}}
       {{- $defaultVars := . -}}
       {{- range $host := .Values.dedicatedFrontend.ingress.additionalHosts -}}
-      {{- include "frontend-ingress.rule" (merge (dict "_host" $host ) $defaultVars ) | nindent 4 -}}
+      {{- include "frontend-ingress.admin-rule" (merge (dict "_host" $host ) $defaultVars ) | nindent 4 -}}
       {{- end -}}
       {{- end }}
 

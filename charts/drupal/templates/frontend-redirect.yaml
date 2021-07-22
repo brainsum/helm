@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-admin-redirect-config
+  name: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-redirect-config
   labels:
     {{- include "common.labels" . | indent 4 }}
     app.kubernetes.io/component: app
@@ -14,7 +14,7 @@ data:
 
       server_name _;
       # @todo: don't assume https
-      return 301 https://{{ .Values.ingress.host }}$request_uri;
+      return 301 https://{{ .Values.dedicatedFrontend.ingress.host }}$request_uri;
     }
 
     server {
@@ -36,11 +36,11 @@ data:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-admin-redirect-app-service
+  name: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-redirect-app-service
   labels:
     {{- include "common.labels" . | indent 4 }}
     app.kubernetes.io/component: app
-    deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-admin-redirect-app-service
+    deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-redirect-app-service
 spec:
   type: ClusterIP
   ports:
@@ -49,9 +49,9 @@ spec:
       protocol: TCP
       name: http
   selector:
-  {{- include "deployment.frontendAdminRedirectSelectors" . | indent 4 }}
+  {{- include "deployment.frontendRedirectSelectors" . | indent 4 }}
 ---
 {{- $redirectorImage := (include "frontend-admin.image-name" (dict "name" .Values.dedicatedFrontend.ingress.redirectorImage "tag" .Values.dedicatedFrontend.ingress.redirectorImageTag) | trim ) -}}
-{{- include "frontend-admin.deployment" (merge (dict "_isAdmin" true "_deploymentType" "redirect" "_deploymentSelectorName" "deployment.frontendAdminRedirectSelectors" "_image" $redirectorImage) .) }}
+{{- include "frontend-admin.deployment" (merge (dict "_isAdmin" false "_deploymentType" "redirect" "_deploymentSelectorName" "deployment.frontendRedirectSelectors" "_image" $redirectorImage) .) }}
 {{- end }}
 {{- end }}
