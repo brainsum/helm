@@ -105,6 +105,10 @@ robotsOverride:
 
 appDatabaseHost: "drupal-database-mariadb.drupal.svc.cluster.local"
 
+#
+# @todo: Making probes optional would be a good idea.
+#
+
 #drupalStartupProbe:
 #  initialDelaySeconds: 5
 #  periodSeconds: 10
@@ -237,7 +241,7 @@ trustedHosts:
   enable: false
   existingConfig: ""
   # @note: Additional hosts only works if existingConfig is not set.
-#  additionalHosts:
+  additionalHosts: []
 #    - 'localhost'
 #    - 'drupal.docker.localhost'
 
