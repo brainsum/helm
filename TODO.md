@@ -47,6 +47,11 @@
               averageUtilization: 75
 
     ```
+- InitContainer:
+   - use `drush twigc` in an init container, copy to proper location of the containers.
+- HA: is it an option to use something like "at least 1 pod on each node"?
+- Maintenance mode throws 502 for healthchecks
+
 
 # Research
 - https://github.com/roboll/helmfile
