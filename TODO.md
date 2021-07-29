@@ -1,6 +1,15 @@
 # To-dos
 
 ## Additional
+- Add option to set cookiedomain
+```yaml
+services.cookie.yml: |
+  parameters:
+    session.storage.options:
+      cookie_domain: '.mysite.org'
+```
+
+
 - drupalExtraEnvVars
   - This should be spilt up:
     - drupalCommonEnvVars
