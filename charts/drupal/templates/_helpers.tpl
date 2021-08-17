@@ -73,17 +73,31 @@ app.kubernetes.io/part-of: {{ .Values.global.project }}
 {{ define "drupal.mounts" }}
 {{- include "drupal.settings.mounts" . -}}
 {{- include "drupal.backup.mounts" . -}}
-{{- /* @todo: Add a ramdisk volume for /tmp/drupal-storage */}}
+{{- if eq (.Values.sessionOverride.enable | default false) true }}
+- name: session-services
+  mountPath: {{ .Values.drupalSettingsDir | trim }}/services.session.yml
+  subPath: services.session.yml
+  readOnly: true
+{{- end }}
+{{- /* @todo: Maybe add a ramdisk volume for /tmp/drupal-storage */}}
 {{ end }}
 
 {{ define "drupal.volumes" }}
 {{- include "drupal.settings.volumes" . -}}
 {{- include "drupal.backup.volumes" . -}}
+{{- if eq (.Values.sessionOverride.enable | default false) true }}
+- name: session-services
+  configMap:
+    name: {{ include "app.sessionConfName" . | trim }}
+    items:
+      - key: services.session.yml
+        path: services.session.yml
+{{- end }}
 {{ end }}
 
 {{ define "nginx.mounts" }}
 {{- /* @todo: Move common.mounts here and mount them as read-only */}}
-{{- /* In your pod template, make sure that you set spec.volumes.persistentVolumeClaim.readOnly to true. This ensures the volume is attached in readonly mode. */}}
+{{- /* In your pod template, make sure that you set spec.volumes.persistentVolumeClaim.readOnly to true. */}}
 {{ end }}
 
 {{ define "nginx.volumes" }}
@@ -135,6 +149,15 @@ app.kubernetes.io/part-of: {{ .Values.global.project }}
 "{{ .Values.global.project }}-{{ .Values.global.environment }}-app-robotstxt"
 {{ else }}
 {{ .Values.robotsOverride.existingConfig | quote }}
+{{ end }}
+{{- end -}}
+
+{{/* Stuff for services.session.yml overrides. */}}
+{{- define "app.sessionConfName" -}}
+{{ if .Values.sessionOverride.existingConfig | empty -}}
+"{{ .Values.global.project }}-{{ .Values.global.environment }}-app-session-config"
+{{ else }}
+{{ .Values.sessionOverride.existingConfig | quote }}
 {{ end }}
 {{- end -}}
 

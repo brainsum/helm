@@ -1,0 +1,25 @@
+{{- if eq .Values.sessionOverride.enable true }}
+{{- if .Values.sessionOverride.existingConfig | empty }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "app.sessionConfName" . | trim }}
+  labels:
+    {{- include "common.labels" . | indent 4 }}
+    app.kubernetes.io/component: app
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/resource-policy: keep
+    helm.sh/hook-weight: "-1"
+  {{- if eq (.Values.annotateDeployment | default false) true }}
+    timestamp: {{ now | date "2006-01-02_15-04-05" | quote }}
+  {{- end }}
+data:
+  services.session.yml: |
+    parameters:
+      session.storage.options:
+        cookie_domain: {{ .Values.sessionOverride.cookieDomain | quote }}
+        gc_maxlifetime: {{ .Values.sessionOverride.gcMaxLifetime }}
+        cookie_lifetime: {{ .Values.sessionOverride.cookieLifetime }}
+  {{- end -}}
+{{- end -}}
