@@ -1,4 +1,4 @@
-{{- if eq .Values.redis.enable true }}
+{{- if eq (.Values.redis.enable | default false) true }}
 {{- if .Values.redis.existingConfig | empty }}
 apiVersion: v1
 kind: ConfigMap

@@ -21,7 +21,7 @@ This was moved to a separate file as this is the only mount-related code that ca
       - key: settings.solr.php
         path: settings.solr.php
 {{- end }}
-{{- if eq .Values.redis.enable true }}
+{{- if eq (.Values.redis.enable | default false) true }}
 - name: redis-settings
   configMap:
     name: {{ include "app.redisConfName" . | trim }}
@@ -56,7 +56,7 @@ This was moved to a separate file as this is the only mount-related code that ca
   subPath: settings.solr.php
   readOnly: true
 {{- end }}
-{{- if eq .Values.redis.enable true }}
+{{- if eq (.Values.redis.enable | default false) true }}
 - name: redis-settings
   mountPath: {{ .Values.drupalSettingsDir | trim }}/settings.redis.php
   subPath: settings.redis.php

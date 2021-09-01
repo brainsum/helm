@@ -193,7 +193,7 @@ exec:
         key: password
   {{- end }}
   {{- end }}
-  {{- if eq .Values.redis.enable true }}
+  {{- if eq (.Values.redis.enable | default false) true }}
   - name: REDIS_HOST
     valueFrom:
       configMapKeyRef:
