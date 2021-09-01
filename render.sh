@@ -6,7 +6,6 @@
 SCRIPT=$(readlink -f "$0")
 SCRIPT_DIR=$(dirname "$SCRIPT")
 
-
 PROJECT=helmdemo
 CHART="drupal"
 CHART_PATH="${SCRIPT_DIR}/charts/${CHART}"
@@ -41,3 +40,29 @@ RELEASE_NAME="${PROJECT}"
 helm template "${RELEASE_NAME}" "${CHART_PATH}" \
     --output-dir "${OUTPUT_DIR}" \
     --debug
+
+# Check for deprecations.
+CACHE_DIR="${SCRIPT_DIR}/tmp/.cache"
+BIN_DIR="${SCRIPT_DIR}/.bin"
+PLUTO_VERSION=5.0.0
+
+mkdir -p "${BIN_DIR}"
+mkdir -p "${CACHE_DIR}"
+
+function downloadPluto() {
+    curl -L "https://github.com/FairwindsOps/pluto/releases/download/v${PLUTO_VERSION}/pluto_${PLUTO_VERSION}_linux_amd64.tar.gz" \
+        -o "${CACHE_DIR}/pluto_${PLUTO_VERSION}_linux_amd64.tar.gz" \
+      && tar -xf "${CACHE_DIR}/pluto_${PLUTO_VERSION}_linux_amd64.tar.gz" -C "${CACHE_DIR}" \
+      && rm "${CACHE_DIR}/pluto_${PLUTO_VERSION}_linux_amd64.tar.gz" \
+      && mv "${CACHE_DIR}/pluto" "${BIN_DIR}/pluto"
+
+    "${BIN_DIR}/pluto" version || exit 1
+}
+
+if [ -f "${BIN_DIR}/pluto" ]; then
+  "${BIN_DIR}/pluto" version || exit 1
+else
+  downloadPluto || exit 1
+fi
+
+"${BIN_DIR}/pluto" detect-files -d "${SCRIPT_DIR}/.rendered"
