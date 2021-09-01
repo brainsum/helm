@@ -24,6 +24,7 @@ do
   helm template "${RELEASE_NAME}" "${CHART_PATH}" \
     -f "${VALUE_FILE}" \
     --output-dir "${OUTPUT_DIR}" \
+    --validate \
     --debug
 done
 
