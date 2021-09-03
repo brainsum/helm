@@ -71,12 +71,11 @@ dedicatedFrontend:
     maxReplicas: 10
   drupalExtraEnvVars: []
   nginxExtraEnvVars: []
+  tolerations: []
+  nodeSelector: {}
 
-#
-# @todo: Deny access to admin paths on frontend ingress
-# - Maybe redirect to the admin URL?
-#
-
+appTolerations: []
+appNodeSelector: {}
 
 ingress:
   host: "mysite.com"

@@ -24,6 +24,14 @@ spec:
         timestamp: {{ now | date "2006-01-02_15-04-05" | quote }}
       {{- end }}
     spec:
+      {{- if not (.Values.dedicatedFrontend.nodeSelector | empty) }}
+      nodeSelector:
+        {{- .Values.dedicatedFrontend.nodeSelector | toYaml | nindent 8 }}
+      {{- end }}
+      {{- if not (.Values.dedicatedFrontend.tolerations | empty) }}
+      tolerations:
+        {{- .Values.dedicatedFrontend.tolerations | toYaml | nindent 8 }}
+      {{- end }}
       securityContext:
         fsGroup: 1000
       imagePullSecrets:
