@@ -1,15 +1,31 @@
 # To-dos
 
+## Global
+
+- Linux/Cluster hardening
+  - https://media.defense.gov/2021/Aug/03/2002820425/-1/-1/1/CTR_KUBERNETESHARDENINGGUIDANCE.PDF
+  - https://kubernetes.io/docs/tasks/administer-cluster/securing-a-cluster/
+  - https://www.stackrox.io/blog/kubernetes-security-101/
+  - https://bridgecrew.io/blog/scan-helm-charts-for-kubernetes-misconfigurations-with-checkov/
+  - https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster
+
+## Main
+- Set up immutable containers
+  ```yaml
+  # Containerspec
+  securityContext:
+    readOnlyRootFilesystem: true
+  ```
+  - see: https://lucasvanlierop.nl/blog/2017/12/31/truly-immutable-deployments-with-docker-or-kubernetes/
+- Other security features
+  - https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+  - https://kubernetes.io/docs/concepts/policy/pod-security-policy/
+  - https://cloud.google.com/architecture/best-practices-for-operating-containers
+
+
 ## Additional
-- Add option to set cookiedomain
-```yaml
-services.cookie.yml: |
-  parameters:
-    session.storage.options:
-      cookie_domain: '.mysite.org'
-```
 
-
+- Add values.schema.json
 - drupalExtraEnvVars
   - This should be spilt up:
     - drupalCommonEnvVars
@@ -22,45 +38,11 @@ services.cookie.yml: |
     - Allow using existing configs
 - TBD: Add secrets and other configs with placeholders only, add flag for only allowing them with `helm template`
     - This is needed for consistent resource names and labels.
-- Debug why drupal-managed-premium-storage StorageClass doesn't work.
-    - Note, this is not part of this repo.
-- Auto-redeploy the deployment when configs/secrets change ([Doc](https://helm.sh/docs/howto/charts_tips_and_tricks/)):
-    - `checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}`
-- Create a proper repo
-    - https://tech.paulcz.net/blog/creating-a-helm-chart-monorepo-part-1/
-- When possible, update to higher K8s version
-    - Current: 1.15
-    - Available in 1.16: startupProbe
-- Autoscaler:
-    ```
-    apiVersion: autoscaling/v2beta2
-    kind: HorizontalPodAutoscaler
-    metadata:
-      name: app-autoscaler
-      namespace: reap
-      labels:
-        app: drupal-app
-    spec:
-      scaleTargetRef:
-        apiVersion: apps/v1
-        kind: Deployment
-        name: drupal-app
-      minReplicas: 1
-      maxReplicas: 1
-      metrics:
-        - type: Resource
-          resource:
-            name: cpu
-            target:
-              type: Utilization
-              averageUtilization: 75
-
-    ```
 - InitContainer:
    - use `drush twigc` in an init container, copy to proper location of the containers.
 - HA: is it an option to use something like "at least 1 pod on each node"?
-- Maintenance mode throws 502 for healthchecks
-
+- Consider RBAC
+  - https://helm.sh/docs/chart_best_practices/rbac/#yaml-configuration
 
 # Research
 - https://github.com/roboll/helmfile
@@ -71,3 +53,4 @@ services.cookie.yml: |
 
 ## Not necessarily Helm
 - https://github.com/cloudquery/cloudquery
+- https://github.com/armosec/kubescape
