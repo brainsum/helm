@@ -65,4 +65,4 @@ else
   downloadPluto || exit 1
 fi
 
-"${BIN_DIR}/pluto" detect-files -d "${SCRIPT_DIR}/.rendered"
+"${BIN_DIR}/pluto" detect-files -owide -d "${SCRIPT_DIR}/.rendered"
