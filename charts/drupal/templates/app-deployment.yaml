@@ -6,8 +6,9 @@ metadata:
     {{- include "common.labels" . | indent 4 }}
     app.kubernetes.io/component: app
     deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-app
-  {{- if eq (.Values.annotateDeployment | default false) true }}
   annotations:
+    {{- include "drupal.configChecksums" . | nindent 4 -}}
+  {{- if eq (.Values.annotateDeployment | default false) true }}
     timestamp: {{ now | date "2006-01-02_15-04-05" | quote }}
   {{- end }}
 spec:
