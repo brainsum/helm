@@ -10,7 +10,7 @@ PROJECT=helmdemo
 CHART="drupal"
 CHART_PATH="${SCRIPT_DIR}/charts/${CHART}"
 
-ENVIRONMENTS='staging production'
+ENVIRONMENTS='minimal staging production'
 
 for ENVIRONMENT in ${ENVIRONMENTS}
 do
