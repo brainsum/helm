@@ -53,7 +53,11 @@ deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-fronte
 
 {{- define "common.labels" }}
 helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
-app.kubernetes.io/version: {{ .Chart.AppVersion }}
+{{/*
+@todo: appversion got removed, maybe chart version is not the best replacement
+Maybe drupal tag?
+ */}}
+app.kubernetes.io/version: {{ .Chart.Version | replace "+" "_" }}
 app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
 environment: {{ .Values.global.environment }}
 app.kubernetes.io/instance: {{ .Release.Name | quote }}
