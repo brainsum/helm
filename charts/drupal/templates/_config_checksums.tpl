@@ -5,11 +5,6 @@ checksum/app-config: {{ include (print $.Template.BasePath "/app-config.yaml") .
 checksum/redis-config: {{ include (print $.Template.BasePath "/redis-config.yaml") . | sha256sum }}
 {{- end }}
 {{- end }}
-{{- if eq .Values.robotsOverride.enable true }}
-{{- if .Values.robotsOverride.existingConfig | empty }}
-checksum/robots-config: {{ include (print $.Template.BasePath "/robots-config.yaml") . | sha256sum }}
-{{- end }}
-{{- end }}
 {{- if eq .Values.trustedHosts.enable true }}
 {{- if .Values.trustedHosts.existingConfig | empty }}
 checksum/trusted-hosts-config: {{ include (print $.Template.BasePath "/trusted-hosts-config.yaml") . | sha256sum }}

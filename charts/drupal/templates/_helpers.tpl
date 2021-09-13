@@ -73,7 +73,6 @@ app.kubernetes.io/part-of: {{ .Values.global.project }}
 
 {{ define "common.volumes" }}
 {{- include "drupal.data.volumes" . -}}
-{{- include "drupal.robots.volumes" . -}}
 {{ end }}
 
 {{ define "drupal.mounts" }}
@@ -158,6 +157,15 @@ app.kubernetes.io/part-of: {{ .Values.global.project }}
 {{ end }}
 {{- end -}}
 
+{{/* Stuff for robots.txt overrides. */}}
+{{- define "app.frontendRobotsConfName" -}}
+{{ if .Values.dedicatedFrontend.robotsOverride.existingConfig | empty -}}
+"{{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-app-robotstxt"
+{{ else }}
+{{ .Values.dedicatedFrontend.robotsOverride.existingConfig | quote }}
+{{ end }}
+{{- end -}}
+
 {{/* Stuff for services.session.yml overrides. */}}
 {{- define "app.sessionConfName" -}}
 {{ if .Values.sessionOverride.existingConfig | empty -}}
@@ -172,6 +180,17 @@ app.kubernetes.io/part-of: {{ .Values.global.project }}
 - name: robots-file
   configMap:
     name: {{ include "app.robotsConfName" . | trim }}
+    items:
+      - key: robots.txt
+        path: robots.txt
+{{- end -}}
+{{ end }}
+
+{{ define "drupalFrontend.robots.volumes" }}
+{{- if eq .Values.dedicatedFrontend.robotsOverride.enable true -}}
+- name: robots-file
+  configMap:
+    name: {{ include "app.frontendRobotsConfName" . | trim }}
     items:
       - key: robots.txt
         path: robots.txt

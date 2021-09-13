@@ -57,7 +57,6 @@ dedicatedFrontend:
 #            name: another-service
 #            port:
 #              name: http
-
   resources:
     drupalCpuRequest: "10m"
     drupalMemoryRequest: "32Mi"
@@ -75,6 +74,10 @@ dedicatedFrontend:
   nginxExtraEnvVars: []
   tolerations: []
   nodeSelector: {}
+  # This is useful for disallowing robots access.
+  robotsOverride:
+    enable: true
+    existingConfig: ""
 
 appTolerations: []
 appNodeSelector: {}

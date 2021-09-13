@@ -9,6 +9,11 @@ metadata:
     deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-app
   annotations:
     {{- include "drupal.configChecksums" . | nindent 4 -}}
+    {{- if eq .Values.robotsOverride.enable true }}
+    {{- if .Values.robotsOverride.existingConfig | empty }}
+    checksum/robots-config: {{ include (print $.Template.BasePath "/frontend-robots-config.yaml") . | sha256sum }}
+    {{- end }}
+    {{- end }}
   {{- if eq (.Values.dedicatedFrontend.annotateDeployment | default false) true }}
     timestamp: {{ now | date "2006-01-02_15-04-05" | quote }}
   {{- end }}
@@ -40,6 +45,7 @@ spec:
       volumes:
       {{- include "common.volumes" . | indent 6 -}}
       {{- include "drupal.volumes" . | indent 6 -}}
+      {{- include "drupalFrontend.robots.volumes" . | nindent 6 }}
       terminationGracePeriodSeconds: {{ .Values.gracefulUpdate.terminationGracePeriodSeconds | default "15" }}
       containers:
         {{- include "drupal.deployment.containerSpec" (merge (dict "_isFrontend" true) .) | indent 8 -}}

@@ -1,0 +1,22 @@
+{{- if eq .Values.dedicatedFrontend.robotsOverride.enable true }}
+{{- if .Values.dedicatedFrontend.robotsOverride.existingConfig | empty }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "app.frontendRobotsConfName" . | trim }}
+  labels:
+    {{- include "common.labels" . | indent 4 }}
+    app.kubernetes.io/component: app
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/resource-policy: keep
+    helm.sh/hook-weight: "-1"
+  {{- if eq (.Values.annotateDeployment | default false) true }}
+    timestamp: {{ now | date "2006-01-02_15-04-05" | quote }}
+  {{- end }}
+data:
+  robots.txt: |
+    User-agent: *
+    Disallow: /
+{{- end -}}
+{{- end -}}
