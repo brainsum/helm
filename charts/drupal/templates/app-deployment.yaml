@@ -59,6 +59,7 @@ spec:
               containerPort: {{ .Values.nginxHealthPort | default 8080 }}
           volumeMounts:
           {{- include "common.mounts" . | indent 10 -}}
+          {{- include "drupal.robots.mounts" . | nindent 10 }}
           {{- include "nginx.mounts" . | indent 10 -}}
           env:
             - name: NGINX_HEALTH_PORT

@@ -68,7 +68,6 @@ app.kubernetes.io/part-of: {{ .Values.global.project }}
 
 {{ define "common.mounts" }}
 {{- include "drupal.data.mounts" . -}}
-{{- include "drupal.robots.mounts" . -}}
 {{ end }}
 
 {{ define "common.volumes" }}
@@ -199,6 +198,15 @@ app.kubernetes.io/part-of: {{ .Values.global.project }}
 
 {{ define "drupal.robots.mounts" }}
 {{- if eq .Values.robotsOverride.enable true -}}
+- name: robots-file
+  mountPath: /var/www/html/web/robots.txt
+  subPath: robots.txt
+  readOnly: true
+{{- end -}}
+{{ end }}
+
+{{ define "drupalFrontend.robots.mounts" }}
+{{- if eq .Values.dedicatedFrontend.robotsOverride.enable true -}}
 - name: robots-file
   mountPath: /var/www/html/web/robots.txt
   subPath: robots.txt

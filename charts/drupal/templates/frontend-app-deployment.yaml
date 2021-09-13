@@ -9,8 +9,8 @@ metadata:
     deployment: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-app
   annotations:
     {{- include "drupal.configChecksums" . | nindent 4 -}}
-    {{- if eq .Values.robotsOverride.enable true }}
-    {{- if .Values.robotsOverride.existingConfig | empty }}
+    {{- if eq .Values.dedicatedFrontend.robotsOverride.enable true }}
+    {{- if .Values.dedicatedFrontend.robotsOverride.existingConfig | empty }}
     checksum/robots-config: {{ include (print $.Template.BasePath "/frontend-robots-config.yaml") . | sha256sum }}
     {{- end }}
     {{- end }}
@@ -59,6 +59,7 @@ spec:
               containerPort: {{ .Values.nginxHealthPort | default 8080 }}
           volumeMounts:
           {{- include "common.mounts" . | indent 10 -}}
+          {{- include "drupalFrontend.robots.mounts" . | indent 10 -}}
           {{- include "nginx.mounts" . | indent 10 -}}
           env:
             - name: NGINX_HEALTH_PORT
