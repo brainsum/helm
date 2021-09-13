@@ -37,6 +37,7 @@ exec:
     timeoutSeconds: 5
     failureThreshold: 8
   {{- end }}
+  # @todo: Remove this, add "resources" instead and allow people to add what they want.
   resources:
   {{- if eq (._isFrontend | default false) true }}
   {{- include "drupal.frontend.resources" . | indent 4 }}
