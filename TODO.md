@@ -22,6 +22,12 @@
   - https://kubernetes.io/docs/concepts/policy/pod-security-policy/
   - https://cloud.google.com/architecture/best-practices-for-operating-containers
 
+```yaml
+# https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/
+preemptionPolicy: []
+priority: 10000
+priorityClassName: asd
+```
 
 ## Additional
 
