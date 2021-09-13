@@ -230,10 +230,12 @@ exec:
     containerPort: {{ .Values.drupalFpmHealthPort | default 9000 }}
   volumeMounts:
   {{- include "common.mounts" . | indent 2 -}}
+  {{- if eq (._isJob | default false) false -}}
   {{- if eq (._isFrontend | default false) true -}}
   {{- include "drupalFrontend.robots.mounts" . | nindent 2 }}
   {{ else }}
   {{- include "drupal.robots.mounts" . | nindent 2 }}
+  {{- end }}
   {{- end }}
   {{- include "drupal.mounts" . | indent 2 -}}
 {{ end }}
