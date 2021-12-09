@@ -1,4 +1,13 @@
 {{/* Generic templates. */}}
+
+{{- define "drupal.webRoot" -}}
+{{ if .Values.drupalWebRoot | empty -}}
+/var/www/html/web
+{{ else }}
+{{ .Values.drupalWebRoot | trim }}
+{{ end }}
+{{- end -}}
+
 {{/* Drupal data volumes */}}
 {{ define "drupal.data.volumes" }}
 - name: drupal-data
@@ -12,7 +21,7 @@
   mountPath: /var/www/html/private_files
   subPath: private_files
 - name: drupal-data
-  mountPath: /var/www/html/web/sites/default/files
+  mountPath: {{ include "drupal.webRoot" . | trim }}/sites/default/files
   subPath: files
 {{ end }}
 
@@ -199,7 +208,7 @@ app.kubernetes.io/part-of: {{ .Values.global.project }}
 {{ define "drupal.robots.mounts" }}
 {{- if eq .Values.robotsOverride.enable true -}}
 - name: robots-file
-  mountPath: /var/www/html/web/robots.txt
+  mountPath: {{ include "drupal.webRoot" . | trim }}/robots.txt
   subPath: robots.txt
   readOnly: true
 {{- end -}}
@@ -208,7 +217,7 @@ app.kubernetes.io/part-of: {{ .Values.global.project }}
 {{ define "drupalFrontend.robots.mounts" }}
 {{- if eq .Values.dedicatedFrontend.robotsOverride.enable true -}}
 - name: robots-file
-  mountPath: /var/www/html/web/robots.txt
+  mountPath: {{ include "drupal.webRoot" . | trim }}/robots.txt
   subPath: robots.txt
   readOnly: true
 {{- end -}}
