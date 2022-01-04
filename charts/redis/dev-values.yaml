@@ -1,0 +1,69 @@
+global:
+  imageRegistry: marketplace.azurecr.io
+  redis:
+    password: ""
+
+image:
+  registry: docker.io
+  repository: bitnami/redis
+  tag: 6.2.6-debian-10-r81
+  pullPolicy: IfNotPresent
+  debug: false
+
+architecture: standalone
+auth:
+  enabled: true
+  sentinel: true
+  password: ""
+  existingSecret: "common-redis-secret"
+  existingSecretPasswordKey: "password"
+
+master:
+  extraFlags:
+    - "--maxmemory-policy allkeys-lru"
+    - "--maxmemory 4096mb"
+    - "--stop-writes-on-bgsave-error no"
+    - "--save ''"
+  containerPort: 6379
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 4096Mi
+    requests:
+      cpu: 500m
+      memory: 1024Mi
+  podSecurityContext:
+    enabled: true
+    fsGroup: 1001
+  containerSecurityContext:
+    enabled: true
+    runAsUser: 1001
+  nodeSelector:
+    agentpool: "agentpool3"
+  tolerations:
+    - key: role
+      value: nonproduction
+      effect: NoSchedule
+  persistence:
+    enabled: false
+sentinel:
+  enabled: false
+
+metrics:
+  enabled: true
+  image:
+    registry: docker.io
+    repository: bitnami/redis-exporter
+    tag: 1.33.0-debian-10-r6
+    pullPolicy: IfNotPresent
+  redisTargetHost: "localhost"
+  containerSecurityContext:
+    enabled: true
+    runAsUser: 1001
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9121"
+  serviceMonitor:
+    enabled: true
+    namespace: "monitoring"
+    interval: 30s
