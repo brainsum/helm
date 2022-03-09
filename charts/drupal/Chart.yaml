@@ -4,7 +4,7 @@ description: Opinionated helm chart for Drupal 8/9.
 # @todo: Explore how this can be turned into a library.
 type: application
 
-version: 0.21.0
+version: 0.22.0
 
 kubeVersion: ^1.21.0
 
