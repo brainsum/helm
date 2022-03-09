@@ -1,3 +1,4 @@
+{{- if eq (.Values.skipDbBackupJob | default false) false }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -33,3 +34,4 @@ spec:
       {{- include "drupal.backupJob.containerSpec" (merge (dict "_isJob" true) .) | indent 6 -}}
 {{/*---*/}}
 {{/*# @todo: Add job for saving files, too.*/}}
+{{- end }}
