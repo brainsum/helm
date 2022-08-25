@@ -30,23 +30,30 @@ spec:
       policies:
         - type: Percent
           value: 20
-          periodSeconds: 15
+          periodSeconds: 10
         - type: Pods
           value: 2
-          periodSeconds: 15
+          periodSeconds: 10
   metrics:
     - type: Resource
       resource:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: 75
+          averageUtilization: 50
     - type: Resource
       resource:
         name: memory
         target:
           type: Utilization
-          averageUtilization: 75
+          averageUtilization: 50
+    - type: Pods
+      pods:
+	metric:
+	  name: packets-per-second
+	target:
+	  type: AverageValue
+	  averageValue: 1k
 {{- end -}}
 {{- end -}}
 {{/* @todo: Explore other metrics, see https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/ */}}
