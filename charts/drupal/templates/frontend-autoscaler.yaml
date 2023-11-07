@@ -1,6 +1,6 @@
 {{- if eq (.Values.dedicatedFrontend.enable | default false) true }}
 {{- if eq (.Values.dedicatedFrontend.scaling.useAutoscaler | default false) true }}
-apiVersion: autoscaling/v2beta2
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ .Values.global.project }}-{{ .Values.global.environment }}-frontend-app-hpa
