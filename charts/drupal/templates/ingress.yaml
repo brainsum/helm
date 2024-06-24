@@ -10,6 +10,7 @@ metadata:
     kubernetes.io/ingress.class: azure/application-gateway
     appgw.ingress.kubernetes.io/cookie-based-affinity: "true"
     appgw.ingress.kubernetes.io/request-timeout: {{ .Values.ingress.requestTimeout | default "60" | quote }}
+    appgw.ingress.kubernetes.io/health-probe-path: {{ .Values.ingress.healthProbePath | default "/" | quote }}
     appgw.ingress.kubernetes.io/connection-draining: "true"
     appgw.ingress.kubernetes.io/connection-draining-timeout: {{ .Values.gracefulUpdate.connectionDrainTimeout | default "15" | quote }}
     {{- if eq .Values.ingress.sslRedirect true }}
