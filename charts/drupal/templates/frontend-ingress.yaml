@@ -11,7 +11,9 @@ metadata:
     kubernetes.io/ingress.class: azure/application-gateway
     appgw.ingress.kubernetes.io/cookie-based-affinity: "true"
     appgw.ingress.kubernetes.io/request-timeout: {{ .Values.dedicatedFrontend.ingress.requestTimeout | default "180" | quote }}
-    appgw.ingress.kubernetes.io/health-probe-path: {{ .Values.dedicatedFrontend.ingress.healthProbePath | default "/" | quote }}
+    {{- if .Values.dedicatedFrontend.ingress.healthProbePath }}
+    appgw.ingress.kubernetes.io/health-probe-path: {{ .Values.dedicatedFrontend.ingress.healthProbePath | quote }}
+    {{- end }}
     appgw.ingress.kubernetes.io/connection-draining: "true"
     appgw.ingress.kubernetes.io/connection-draining-timeout: {{ .Values.gracefulUpdate.connectionDrainTimeout | default "15" | quote }}
     {{- if eq .Values.dedicatedFrontend.ingress.sslRedirect true }}
