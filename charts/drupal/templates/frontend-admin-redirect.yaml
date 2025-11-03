@@ -13,8 +13,18 @@ data:
       listen {{ .Values.nginxTargetPort | default 8080 | int }} default_server ipv6only=off;
 
       server_name _;
-      # @todo: don't assume https
-      return 301 https://{{ .Values.ingress.host }}$request_uri;
+
+      # Health check endpoint for Azure Application Gateway.
+      location /health-check {
+        access_log off;
+        return 200 "Ok.";
+      }
+
+      # Redirect all other requests.
+      location / {
+        # @todo: don't assume https
+        return 301 https://{{ .Values.ingress.host }}$request_uri;
+      }
     }
 
     server {

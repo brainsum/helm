@@ -12,7 +12,17 @@ data:
     server {
       listen {{ .Values.nginxTargetPort | default 8080 | int }} default_server ipv6only=off;
       server_name _;
-      return 404;
+
+      # Health check endpoint for Azure Application Gateway.
+      location /health-check {
+        access_log off;
+        return 200 "Ok.";
+      }
+
+      # Block all other requests.
+      location / {
+        return 404;
+      }
     }
 
     server {
