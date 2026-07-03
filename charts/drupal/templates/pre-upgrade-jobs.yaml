@@ -35,3 +35,39 @@ spec:
 {{/*---*/}}
 {{/*# @todo: Add job for saving files, too.*/}}
 {{- end }}
+{{- if eq (.Values.skipPreUpgradeJob | default false) false }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.global.project }}-{{ .Values.global.environment }}-pre-upgrade
+  labels:
+    {{- include "common.labels" . | indent 4 }}
+    app.kubernetes.io/component: app
+  annotations:
+    # This is what defines this resource as a hook. Without this line, the
+    # job is considered part of the release.
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-weight": "1"
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  ttlSecondsAfterFinished: 3600
+  backoffLimit: 1
+  template:
+    metadata:
+      name: {{ .Values.global.project }}-{{ .Values.global.environment }}-pre-upgrade
+      labels:
+        {{- include "common.labels" . | indent 8 }}
+        app.kubernetes.io/component: app
+    spec:
+      securityContext:
+        fsGroup: 1000
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecret }}
+      volumes:
+      {{- include "common.volumes" . | indent 6 -}}
+      {{- include "drupal.volumes" . | indent 6 -}}
+      restartPolicy: Never
+      containers:
+      {{- include "drupal.preUpgradeJob.containerSpec" (merge (dict "_isJob" true) .) | indent 6 -}}
+{{/*---*/}}
+{{- end }}

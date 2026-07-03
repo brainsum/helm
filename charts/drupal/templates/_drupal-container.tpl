@@ -74,6 +74,24 @@ exec:
   {{- include "drupal.backupJob.resources" . | indent 4 }}
 {{ end }}
 
+{{ define "drupal.preUpgradeJob.containerSpec" -}}
+{{ include "drupal.commonSpec" . -}}
+  command: ["/bin/bash"]
+  args:
+    - "-c"
+    - {{ include "drupal.preUpgrade.commandArg" . }}
+  resources:
+  {{- include "drupal.preUpgradeJob.resources" . | indent 4 }}
+{{ end }}
+
+{{- define "drupal.preUpgrade.commandArg" -}}
+{{- if not (.Values.drupalPreUpgradeJob | empty) -}}
+{{ .Values.drupalPreUpgradeJob.commandArg | default "drush state:set purge.disable 1 && drush state:set exception_mailer.enabled 0" | quote }}
+{{- else -}}
+"drush state:set purge.disable 1 && drush state:set exception_mailer.enabled 0"
+{{- end -}}
+{{- end -}}
+
 {{- define "drupal.backupRestoreJob.backupFile" -}}
 /backups/db-backup.{{- .Values.rollback.backupVersion | default "latest" -}}.sql
 {{- end -}}
@@ -273,6 +291,10 @@ limits:
 {{ end }}
 
 {{ define "drupal.backupJob.resources" }}
+{{- include "drupal.job.resources" . }}
+{{ end }}
+
+{{ define "drupal.preUpgradeJob.resources" }}
 {{- include "drupal.job.resources" . }}
 {{ end }}
 

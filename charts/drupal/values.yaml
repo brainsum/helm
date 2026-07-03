@@ -198,6 +198,11 @@ appDatabaseHost: "drupal-database-mariadb.drupal.svc.cluster.local"
 #drupalDeployJob:
 #  commandArg: "drush deploy && (drush twigc || true) && (drush warmer:enqueue --run-queue || true)"
 
+# What should go into pre-upgrade job (runs after DB backup, before new pods), results in "bash -c commandArg".
+# This is useful for disabling features that might cause issues during deployment.
+#drupalPreUpgradeJob:
+#  commandArg: "drush state:set purge.disable 1 && drush state:set exception_mailer.enabled 0"
+
 # @todo: Add these:
 # An object with job name suffixes as the key and cron schedule as the value. Also changes the saved filename with this as the prefix.
 # Note, this is only for simple db backups. There's also no logrotate or retention policy.
