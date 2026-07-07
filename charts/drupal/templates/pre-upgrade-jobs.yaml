@@ -35,6 +35,7 @@ spec:
 {{/*---*/}}
 {{/*# @todo: Add job for saving files, too.*/}}
 {{- end }}
+---
 {{- if eq (.Values.skipPreUpgradeJob | default false) false }}
 apiVersion: batch/v1
 kind: Job
