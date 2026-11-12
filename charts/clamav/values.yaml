@@ -1,0 +1,27 @@
+# Values for the shared ClamAV daemon (clamd on TCP 3310) used for scanning file uploads.
+#
+# This is not a chart of its own: the upstream wiremind chart is used unmodified,
+# only the values below are overridden.
+#
+#   helm repo add wiremind https://wiremind.github.io/wiremind-helm-charts
+#   helm upgrade clamav wiremind/clamav --install --version 3.7.3 \
+#     --namespace common --values charts/clamav/values.yaml
+#
+# Maintenance:
+# - The ClamAV 1.4 LTS line is supported until about August 2027. Bump image.tag
+#   (and the chart version) before then. Once a version is end-of-life, the
+#   signature CDN blocks its downloads and freshclam exits, while the pod stays
+#   healthy because clamd keeps running, so nothing flags the stale signatures.
+# - Check freshness with: printf 'VERSION\n' | nc <service> 3310
+#   The reply contains the signature database version and its date.
+# - Signatures live in an emptyDir, so every pod restart downloads them again.
+
+image:
+  # The "_base" image ships without signatures; freshclam downloads them on start
+  # and then checks once a day.
+  tag: "1.4.6_base"
+
+# The first start downloads the full signature set before clamd opens its port.
+# Allow up to about 11 minutes (60s + 20 x 30s) instead of the chart default of 150s.
+startupProbe:
+  failureThreshold: 20
