@@ -69,10 +69,48 @@ exec:
   command: ["/bin/bash"]
   args:
     - "-c"
-    - "STAMP=$(date +%F_%I-%M-%S); drush sql-dump --result-file=/backups/db-backup.${STAMP}.sql --gzip && cp /backups/db-backup.${STAMP}.sql.gz /backups/db-backup.latest.sql.gz"
+    - |
+      cd /backups || exit 1
+      KEEP={{ include "drupal.backupJob.keep" . }}
+      STAMP=$(date +%F_%H-%M-%S)
+      FILE="db-backup.${STAMP}.sql.gz"
+      # Timestamped dumps, newest first. Manual dumps and "latest" are never touched.
+      dumps() { ls -1t db-backup.[0-9]*.sql.gz 2>/dev/null; }
+      # Empty files are leftovers of runs that ran out of space.
+      find . -maxdepth 1 -name 'db-backup.[0-9]*.sql.gz' -size 0 -delete
+      # Make room for the new dump and its "latest" copy, sized by the newest
+      # dump plus a margin. This keeps fewer than KEEP dumps on a small volume.
+      LAST=$(dumps | head -n 1)
+      if [ -n "${LAST}" ]; then
+        NEED_KB=$(( $(wc -c < "${LAST}") / 1024 * 22 / 10 ))
+        while [ "$(df -Pk . | awk 'NR==2 {print $4}')" -lt "${NEED_KB}" ]; do
+          OLDEST=$(dumps | tail -n 1)
+          [ -n "${OLDEST}" ] || break
+          echo "Low on space, removing ${OLDEST}"
+          rm -f -- "${OLDEST}"
+        done
+      fi
+      if drush sql-dump --result-file="/backups/db-backup.${STAMP}.sql" --gzip && [ -s "${FILE}" ]; then
+        cp "${FILE}" db-backup.latest.sql.gz || exit 1
+        dumps | tail -n +$(( KEEP + 1 )) | while read -r OLD; do
+          echo "Retention (keep ${KEEP}), removing ${OLD}"
+          rm -f -- "${OLD}"
+        done
+      else
+        rm -f -- "${FILE}" "db-backup.${STAMP}.sql"
+        exit 1
+      fi
   resources:
   {{- include "drupal.backupJob.resources" . | indent 4 }}
 {{ end }}
+
+{{- define "drupal.backupJob.keep" -}}
+{{- if not (.Values.drupalBackupJob | empty) -}}
+{{ .Values.drupalBackupJob.keep | default 5 | int }}
+{{- else -}}
+5
+{{- end -}}
+{{- end -}}
 
 {{ define "drupal.preUpgradeJob.containerSpec" -}}
 {{ include "drupal.commonSpec" . -}}

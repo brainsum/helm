@@ -203,6 +203,12 @@ appDatabaseHost: "drupal-database-mariadb.drupal.svc.cluster.local"
 #drupalPreUpgradeJob:
 #  commandArg: "drush state:set purge.disable 1 && drush state:set exception_mailer.enabled 0"
 
+# How many timestamped dumps the pre-upgrade DB backup job keeps in /backups.
+# Older ones are removed after a successful dump. If the volume is too small
+# for that many, the oldest are removed earlier to make room for the new dump.
+#drupalBackupJob:
+#  keep: 5
+
 # @todo: Add these:
 # An object with job name suffixes as the key and cron schedule as the value. Also changes the saved filename with this as the prefix.
 # Note, this is only for simple db backups. There's also no logrotate or retention policy.
